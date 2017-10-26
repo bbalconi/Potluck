@@ -51,6 +51,11 @@ class SignUp extends Component {
           })
         } else {
         console.log(userObj)
+        if (userObj.data.message == 'An account is already associated with that email address.') {
+          this.setState({
+            message: userObj.data.message
+          })
+        } else {
           this.setState({
             firstName: '',
             lastName: '',
@@ -59,13 +64,11 @@ class SignUp extends Component {
             confirmPassword: '',
             message: userObj.data.message,
             userColor: ''
-            
-          })
+          })        
           this.props.history.push("/login");
           resolve();          
-        }
-      }
-    )})
+        }}
+    }))
   
     }
 
@@ -78,7 +81,6 @@ class SignUp extends Component {
         password: this.state.password,
         color: this.state.userColor
       })
-      
     } else {
         this.setState({
           message: 'Passwords do not match'
