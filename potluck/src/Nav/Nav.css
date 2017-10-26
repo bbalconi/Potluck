@@ -1,10 +1,14 @@
 #navvy{
   padding-top: .5%;
-  background-color: rgb(202, 172, 23, 0.0);
-  color: rgb(255, 255, 255, 1) !important;
+  color: rgb(255, 255, 255, 1);
   font-size: 18px;
 }
 
 .nav-brand{
   margin-left: 2%;
+}
+
+.nav-thing{
+  color: white !important;
+
 }

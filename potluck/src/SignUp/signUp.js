@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Col, CardSubtitle, FormGroup, Label, Input, Card, CardBody, CardTitle } from 'reactstrap';
 import { CirclePicker } from 'react-color';
 import { withRouter } from 'react-router-dom';
-import './SignUp.css';
+import './signUp.css';
 import 'react-color-picker/index.css'
 import ReactPasswordStrength from 'react-password-strength';
 var axios = require('axios');
@@ -45,6 +45,11 @@ class SignUp extends Component {
         color: signupObj.color
       }
       ).then((userObj) => {
+        if(userObj.data.message == "An account is already associated with that email address."){
+          this.setState({
+            message: userObj.data.message
+          })
+        } else {
         console.log(userObj)
           this.setState({
             firstName: '',
@@ -55,12 +60,14 @@ class SignUp extends Component {
             message: userObj.data.message,
             userColor: ''
             
-          })        
+          })
+          this.props.history.push("/login");
           resolve();          
         }
+      }
     )})
+  
     }
-
 
   handleSignup() {
     if (this.state.password === this.state.confirmPassword) {
@@ -71,7 +78,7 @@ class SignUp extends Component {
         password: this.state.password,
         color: this.state.userColor
       })
-      this.props.history.push("/login");
+      
     } else {
         this.setState({
           message: 'Passwords do not match'
@@ -87,7 +94,8 @@ class SignUp extends Component {
   inputemailChange(event) {
     this.setState({ email: event.target.value });
   }
-  changeCallback(event) {    this.setState({ password: event.password });
+  changeCallback(event) {    
+    this.setState({ password: event.password });
   }
   confirmPassword(event) {
     this.setState({ confirmPassword: event.target.value });
@@ -102,7 +110,7 @@ class SignUp extends Component {
   render() {
     return (
       <div className="signup">
-       <Col className='signup-col'></Col>   
+       <Col className='signup-col'></Col>  
         <Card className="signup-card">
           <CardBody>
             <CardTitle className="signup-title"> Sign Up</CardTitle>

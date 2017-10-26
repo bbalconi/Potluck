@@ -40,13 +40,13 @@ class Navvy extends Component {
         <NavbarToggler onClick={this.toggle} />
         <Collapse isOpen={this.state.isOpen} navbar>
           <Nav className="ml-auto" navbar>
-            <NavItem>
-              <NavLink href="/house" >Create House</NavLink>
+            <NavItem className='nav-thing'>
+              <NavLink className='nav-thing' href="/house" >Create House</NavLink>
             </NavItem>
-            <NavItem>
-            <NavLink href="/join-house" >Join House</NavLink>
+            <NavItem className='nav-thing'>
+            <NavLink className='nav-thing'href="/join-house" >Join House</NavLink>
             </NavItem>
-            <NavItem>
+            <NavItem className='nav-thing'>
             <Button action onClick={this.navLogOut} >Logout</Button>
             </NavItem>
           </Nav>
@@ -61,11 +61,11 @@ class Navvy extends Component {
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
-              <NavItem>
-                <NavLink href="/signUp">SignUp</NavLink>
+              <NavItem className='nav-thing'>
+                <NavLink className='nav-thing' href="/signUp">SignUp</NavLink>
               </NavItem>
-              <NavItem>
-                <NavLink href="/login" >Login</NavLink>
+              <NavItem className='nav-thing'>
+                <NavLink className='nav-thing' href="/login" >Login</NavLink>
               </NavItem>
             </Nav>
           </Collapse>

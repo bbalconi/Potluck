@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Card, CardTitle, CardSubtitle, CardBody, Col } from 'reactstrap';
 import GroceryInputs from '../GroceryInputs/GroceryInputs';
+import GroceryInstructions from '../GroceryInstructions/GroceryInstructions';
 import './Main.css';
 import GroceryList from "../GroceryList/GroceryList";
 var axios = require('axios');
@@ -12,6 +13,7 @@ export default class Main extends Component {
     this.sendData = this.sendData.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
     this.selectorToServer = this.selectorToServer.bind(this);
+    this.getHouseName = this.getHouseName.bind(this);
     this.getUser = this.getUser.bind(this);
     this.state = {
       initialized: false
@@ -67,16 +69,36 @@ getList(){
   }
   axios.get('/houses')
   .then((data)=>{
+    console.log(data);
     this.setState({
-      items:data.data,
+      items:data.data.items,
       initialized: true
     });
+    
+  })
+}
+
+getHouseName(){
+  if (this.state.initialized) {
+    this.setState({
+      initialized: false
+    });
+  }
+  axios.get('/houses')
+  .then((data)=>{
+    console.log(data);
+    this.setState({
+      houseName: data.data.houseName,
+      initialized: true
+    });
+
   })
 }
 
 componentDidMount(){
   this.getList();
   this.getUser();
+  this.getHouseName();
 }
 
   _handleKeyPress = (e) => {
@@ -101,6 +123,8 @@ componentDidMount(){
     else {
   return(
     <div className='main'>
+      <GroceryInstructions 
+        getHouseName={this.state.houseName}/>
       <GroceryInputs className='grocery-inputs' 
         sendData={this.sendData} 
         items={this.state.items}

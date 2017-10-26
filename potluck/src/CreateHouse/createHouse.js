@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, FormGroup, Label, Input, Card, CardTitle, CardSubtitle, CardBody, CardText, Col } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
-import './CreateHouse.css';
+import './createHouse.css';
 var axios = require('axios');
 
 class House extends Component {
@@ -34,7 +34,7 @@ class House extends Component {
           message: userObj.data.message
         });
       } else {
-        console.log('New List Failed');
+        this.setState({message: userObj.data.message});
       }
     });
   };

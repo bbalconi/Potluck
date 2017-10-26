@@ -23,6 +23,7 @@ class Login extends Component {
     this.setState({ password: event.target.value });
   }
 
+  //how are we able to do .then(user)?
   testFunc(a, b) {
     this.props.submitLogin(a, b).then((user) => {
       if (user.found){

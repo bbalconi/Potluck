@@ -165,7 +165,9 @@ app.get('/houses', function (req, res, next) {
       if (items == null) {
         console.log('oh well!')
       } else {
-        res.json(items.items)
+        console.log(items)
+        console.log("^^HOUSES CONSOLE LOG ITEMS")
+        res.json(items)
       }
     })
   }
@@ -320,13 +322,13 @@ app.get('/logout', (req, res) => {
   })
 
 
-
+//why is it User.findOne
 app.post("/create-house", (req, res, next) => {
   var house = new House();
   house.houseName = req.body.houseName;
   house.password = req.body.password;
   house.roommates = req.body.roommates;
-  // bob(house.roommates);
+  inviteEmail(house.roommates);
   User.findOne({
     houseName: house.houseName
   }, (err, foundHouse) => {
@@ -342,6 +344,7 @@ app.post("/create-house", (req, res, next) => {
         if (err) {
           console.log(err);
           next(err);
+    
         } else {
           res.json({
             houseReturned: houseReturned,
@@ -396,6 +399,9 @@ app.put('/join', (req, res, next) => {
     }
   })
 });
+
+
+
 
 var port = 5000;
 app.listen(port, () => {
