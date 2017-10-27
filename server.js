@@ -275,31 +275,31 @@ app.post("/signup", (req, res, next) => {
     } else if(req.body.password === ""){
         res.json({
             found: false,
-            message: "Bruh! Really? No password???",
+            message: "Please enter a password",
             success: false
         });
     }else if(verifyEmail(user.email).length <= 0){
         res.json({
             found: false,
-            message: "Sorry mate. You have to put in a real email",
+            message: "Invalid email",
             success: false
         });
     }else if(user.firstName.length <= 0){
         res.json({
             found: false,
-            message: "Can I at least get your first name?",
+            message: "Input your first name",
             success: false
         });
     }else if(user.lastName.length <= 0){
         res.json({
             found: false,
-            message: "What's your last name?",
+            message: "Input your last name",
             success: false
         });
     }else if(user.color.length <= 0){
         res.json({
             found: false,
-            message: "Please pick a color. It is important for later on",
+            message: "Please select a color.",
             success: false
         });
     }else{

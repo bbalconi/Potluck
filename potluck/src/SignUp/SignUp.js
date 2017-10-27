@@ -45,12 +45,6 @@ class SignUp extends Component {
         color: signupObj.color
       }
       ).then((userObj) => {
-        console.log(userObj)
-        if (userObj.data.message == 'An account is already associated with that email address.') {
-          this.setState({
-            message: userObj.data.message
-          })
-        } else {
           this.setState({
             firstName: '',
             lastName: '',
@@ -58,30 +52,39 @@ class SignUp extends Component {
             password: '',
             confirmPassword: '',
             message: userObj.data.message,
-            userColor: ''
+            userColor: '',
+            success: userObj.data.success
           })        
-          this.props.history.push("/login");
           resolve();          
-        }}
+        }
     )})
-    }
+  }
+    
 
 
   handleSignup() {
     if (this.state.password === this.state.confirmPassword) {
+      return new Promise ((resolve, reject) => {
       this.submitSignup({
         firstName: this.state.firstName,
         lastName: this.state.lastName,
         email: this.state.email,
         password: this.state.password,
         color: this.state.userColor
-      })
-    } else {
+      }).then((res) => {
+      if(this.state.success){
+        this.props.history.push("/login");
+      }
+      resolve();
+    })
+  })
+} else {
         this.setState({
           message: 'Passwords do not match'
         })
     }
   }
+
   inputfirstNameChange(event) {
     this.setState({ firstName: event.target.value });
   }
