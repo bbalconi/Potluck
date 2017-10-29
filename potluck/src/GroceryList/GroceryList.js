@@ -15,8 +15,10 @@ class GroceryList extends Component {
         })
         return array;
     }  
-
+    
     render(){
+      let arrayCheck = this.props.items
+      if (arrayCheck != [] && typeof arrayCheck != 'string') {
         let sortedBySelector = this.sortFunc(this.props.items);
         let newList = sortedBySelector.map((item, i)=>{
             return <GroceryItem className='grocery-item' key={i} selectorToServer={this.props.selectorToServer} deleteItem={this.props.deleteItem} item={item}/>
@@ -29,8 +31,13 @@ class GroceryList extends Component {
                     </tbody>   
                 </Table>
             </div>
-        )
+        )} else {
+          return(
+            <div>
+            </div>
+          )}
+        }
     }
-}
+
 
 export default withRouter(GroceryList);

@@ -13,7 +13,6 @@ var uriUtil = require('mongodb-uri');
 var Item = require('./models/items.js');
 var cookieParser = require('cookie-parser');
 const nodemailer = require('nodemailer');
-// var exec = require('./exec.js');
 
 var mongodbUri = 'mongodb://localhost/items';
 var mongooseUri = uriUtil.formatMongoose(mongodbUri);
@@ -70,7 +69,6 @@ passport.deserializeUser(function (id, done) {
 
 })
 
-//BEGIN CHECK IF EMAIL IS EMAIL
 function verifyEmail(email) {
   let emailReplaced = email.replace(/ /g, '');
   let emailSplit = emailReplaced.split(',');
@@ -87,9 +85,7 @@ function verifyEmail(email) {
   });
   return arr.toString();
 }
-//END CHECK IF EMAIL IS EMAIL
 
-//BEGIN MAIL HANDLING
 function inviteEmail(email) {
   let beenVerified = verifyEmail(email);
   if (beenVerified != "") {
@@ -154,7 +150,6 @@ app.post('/items', function (req, res, next) {
 });
 
 app.get('/houses', function (req, res, next) {
-    console.log("Got here")
     if (req.user) {
         House.findById(req.user.house, (err, item) => {
             if (err) {
@@ -166,9 +161,8 @@ app.get('/houses', function (req, res, next) {
                 res.json(items.items);
             }
         });
-    }else{
-        console.log("no req.user")
-        res.json("sorry brah! something went wrong")
+    }else {
+        res.json("Something went wrong.")
     }
 });
 
@@ -339,7 +333,7 @@ app.post('/login', function (req, res, next) {
         }
       })
     } else {
-      res.json({ found: false, success: false, message: "password and username don't match" })
+      res.json({ found: false, success: false, message: "Password and username don't match." })
     }
   })(req, res, next);
   var email = req.body.email;
@@ -397,33 +391,22 @@ app.get('/user', (req, res, next) => {
 });
 
 app.put('/join', (req, res, next) => {
-    console.log("GOT HERE");
-    console.log(req.body)
-    console.log(req.user);
     House.findOne({ "houseName": req.body.joinHouse }, "password users", (err, house) => {
-        console.log("AND HERE");
-        console.log(house)
         if (err) {
             next(err);
         } else if (!house) {
-            console.log("DOWN");
             res.json({ message: "Something went wrong! Please try again." });
         } else if (house.password === req.body.password) {
-            console.log("GOT HERE TOO");
             User.findById(req.user._id, (err, foundUser) => {
-                console.log("ONCE AGAIN");
                 if (err) {
                 console.log(err)
                 res.json({ message: "User not found" })
                 } else {
-                    console.log("JUST ONE MORE");
                     foundUser.house = house._id;
                     foundUser.save((err, userReturned) => {
                         if (err) {
                         next(err);
                         } else {
-                            console.log("SUCCESS");
-                            console.log(userReturned);
                             res.json(userReturned);
                         }
                     });

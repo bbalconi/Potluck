@@ -35,11 +35,11 @@ class House extends Component {
           created: true
         });
       } else {
-        console.log('New House Creation Failed');
+        console.log('Something went wrong.');
       }
     });
   }
-  //Nutz dies für die Scheiße ich sage du brauchst machen am Donnerstag.
+
   addUser(){
     axios.put('/join', {
         joinHouse: this.state.houseName,
@@ -72,7 +72,7 @@ class House extends Component {
             });
         }else{
             this.setState({
-                message: "You didn't even put in a name",
+                message: "Please enter a name.",
                 houseName: '',
                 password: '',
                 roommates: '',
@@ -81,7 +81,7 @@ class House extends Component {
         }
     } else {
       this.setState({
-        message: "Passwords Don't Match",
+        message: "Passwords don't match.",
         houseName: '',
         password: '',
         roommates: '',
@@ -104,9 +104,7 @@ class House extends Component {
   }
   
   componentDidMount(){
-      console.log("GOT HERE");
       if(this.state.created){
-          console.log("AND HERE")
         this.addUser();
         this.setState({
             created: false
