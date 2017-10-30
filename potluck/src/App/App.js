@@ -8,7 +8,7 @@ import House from "../CreateHouse/CreateHouse.js";
 import JoinHouse from "../JoinHouse/JoinHouse.js";
 import Timer from "../timer.js";
 import {
-    HashRouter as Router,
+    BrowserRouter as Router,
     Route,
 } from 'react-router-dom';
 var axios = require('axios');
