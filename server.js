@@ -428,9 +428,6 @@ app.put('/join', (req, res, next) => {
 })
 })
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, './potluck/build/index.html'));
-});
 
 var port = process.env.PORT || 5000;
 app.listen(port, () => {
