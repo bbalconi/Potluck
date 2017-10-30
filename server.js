@@ -33,7 +33,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressSession({ secret: "lee is a fucking beast" }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static('public'));
+app.use(express.static('./potluck/build'));
 
 passport.use(new LocalStrategy({ username: "email", password: "password" },  (email, password, done) => {
   User.findOne({
@@ -104,7 +104,6 @@ function inviteEmail(email) {
         to: beenVerified,
         subject: 'Hello ✔',
         text: 'Hello world?',
-        //EDIT THE HTML TO MAKE THE EMAIL LOOK PRETTY
         html: '<body>' +
         '<style>#bob{font-size: 50%;}</style>' +
         "<p>You have received an invitation to join your friends on our app, Potluck! </p>" +
@@ -125,7 +124,6 @@ function inviteEmail(email) {
     });
   }
 }
-
 
 app.post('/items', function (req, res, next) {
   var item = new Item();

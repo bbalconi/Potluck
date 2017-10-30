@@ -19,7 +19,7 @@ class GroceryList extends Component {
     render(){
       console.log(this.props)
       let arrayCheck = this.props.items
-      if (arrayCheck != [] && typeof arrayCheck != 'string') {
+      if (arrayCheck != [] && typeof arrayCheck != 'string' && arrayCheck != undefined) {
         let sortedBySelector = this.sortFunc(this.props.items);
         let newList = sortedBySelector.map((item, i)=>{
             return <GroceryItem className='grocery-item' key={i} selectorToServer={this.props.selectorToServer} deleteItem={this.props.deleteItem} item={item}/>

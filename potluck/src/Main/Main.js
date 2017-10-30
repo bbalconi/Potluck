@@ -5,7 +5,7 @@ import './Main.css';
 import openSocket from 'socket.io-client';
 import GroceryList from "../GroceryList/GroceryList";
 import GroceryInstructions from "../GroceryInstructions/GroceryInstructions"
-const socket = openSocket('192.168.0.161:8000');
+const socket = openSocket('192.168.1.23:8000');
 const axios = require('axios');
 
 export default class Main extends Component {
