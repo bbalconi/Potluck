@@ -11,14 +11,12 @@ export default class GroceryInstructions extends Component {
   }
 
  render() {
-   console.log(this.props.house.housemate)
+   console.log(this.props)
+   if (this.props.house.houseName != null) {
    let housemates = this.props.house.housemate;
    let housemateColor = this.props.house.housemate.color;
    let houseKey = housemates.map((housemate, i)=>{
-    return <KeyItem className='key-user' key={i} user={this.props.house.housemate} housemate={housemate}/>
-    //make another componenant like our Grocery Itmes and do in line styling concatenate "color=" + {this.userColor}
-  
-
+    return <KeyItem className='key-user' key={i} user={this.props.house.housemate} housemate={housemate}/>  
   })
   return(
     <div >
@@ -31,7 +29,7 @@ export default class GroceryInstructions extends Component {
             by clicking on the items. Watch 
             them turn your user specific color!
             </CardBody>{' '}
-            <CardSubtitle className="key-header">HOUSEMATES KEY</CardSubtitle>
+            <CardSubtitle className="key-header">HALLPPP</CardSubtitle>
         </Card>
         <Table size="sm" className='key-table' >
           <tbody> 
@@ -39,7 +37,20 @@ export default class GroceryInstructions extends Component {
           </tbody>
           </Table> 
         </div>
-  )
+  ) } else {
+    return(
+      <div>
+      <Col></Col>
+      <Card className='instructions'>        
+        <CardBody> Add to your house grocery list. Let your housemates know which items you intend to purchase
+          by clicking on the items. Watch 
+          them turn your user specific color!
+          </CardBody>{' '}
+          <CardSubtitle className="key-header">HOUSEMATES KEY</CardSubtitle>
+      </Card>
+      </div>
+    )
+  }
  }
 
 }

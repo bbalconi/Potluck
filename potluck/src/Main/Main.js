@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Card, CardTitle, CardSubtitle, CardBody, Col } from 'reactstrap';
 import GroceryInputs from '../GroceryInputs/GroceryInputs';
-import GroceryInstructions from '../GroceryInstructions/GroceryInstructions';
 import './Main.css';
 import openSocket from 'socket.io-client';
 import GroceryList from "../GroceryList/GroceryList";
@@ -26,8 +25,7 @@ export default class Main extends Component {
     this.state = {
       initialized: true,
       checkList: true,
-      items: [],
-      house: null
+      items: []
     }
   }
 
@@ -37,7 +35,6 @@ list(cb) {
 }
 
 sendData(foodObj) {
-  console.log(foodObj)
   axios.put('/houses', {
       name: foodObj.name,
       quantity: foodObj.quantity,
@@ -47,6 +44,11 @@ sendData(foodObj) {
     });
   });
 };
+
+getUser() {
+  axios.get('/user').then((res)=>{
+  })
+}
 
 
 deleteItem(id) {
@@ -84,8 +86,7 @@ getList(){
         this.setState({
         items:data.data,
         initialized: true,
-        checkList: false,
-        house: res.data
+        checkList: false
         });
     }
     if (this.state.items) {
@@ -93,9 +94,6 @@ getList(){
     }
   })
 }
-
-
-
 
 componentDidMount(){
   this.getUser();
@@ -131,10 +129,6 @@ componentDidMount(){
     } else {
         return(
             <div className='main'>
-              <GroceryInstructions 
-                getList={this.getList}
-                house={this.state.house}
-              />
             <GroceryInputs className='grocery-inputs' 
                 sendData={this.sendData} 
                 items={this.state.items}

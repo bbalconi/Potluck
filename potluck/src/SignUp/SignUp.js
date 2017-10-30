@@ -52,7 +52,6 @@ class SignUp extends Component {
             password: '',
             confirmPassword: '',
             message: userObj.data.message,
-
             userColor: '',
             success: userObj.data.success
           })        
@@ -60,8 +59,6 @@ class SignUp extends Component {
         }
     )})
   }
-  })
-}
 
 
   handleSignup() {
