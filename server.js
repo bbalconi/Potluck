@@ -13,8 +13,9 @@ var uriUtil = require('mongodb-uri');
 var Item = require('./models/items.js');
 var cookieParser = require('cookie-parser');
 const nodemailer = require('nodemailer');
+require('dotenv');
 
-var mongodbUri = 'mongodb://localhost/items';
+var mongodbUri = process.env.mongoStuff;
 var mongooseUri = uriUtil.formatMongoose(mongodbUri);
 var options = {
   server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
