@@ -166,7 +166,6 @@ app.get('/houses', function (req, res, next) {
     }
 });
 
-
 app.put('/selector', (req, res, next) => {
   House.findByIdAndUpdate({ _id: req.user.house }, "items", (err, house) => {
     house.items.forEach(function (e, i) {
@@ -367,6 +366,7 @@ app.post("/create-house", (req, res, next) => {
         if (err) {
           console.log(err);
           next(err);
+    
         } else {
           res.json({
             houseReturned: houseReturned,
@@ -391,30 +391,44 @@ app.get('/user', (req, res, next) => {
 });
 
 app.put('/join', (req, res, next) => {
-    House.findOne({ "houseName": req.body.joinHouse }, "password users", (err, house) => {
+  House.findOne({ "houseName": req.body.joinHouse }, "password users housemate", (err, house) => {
+    if (err) {
+      console.log(err)
+      next(err)
+    } else if (!house || (house.password != req.body.password)) {
+      res.json({ message: "Something went wrong! Please try again." });
+    } 
+    else if (house.password == req.body.password) {
+      User.findById(req.user._id, (err, foundUser) => {
         if (err) {
-            next(err);
-        } else if (!house) {
-            res.json({ message: "Something went wrong! Please try again." });
-        } else if (house.password === req.body.password) {
-            User.findById(req.user._id, (err, foundUser) => {
+          console.log(err)
+          res.json({ message: "User not found" })
+        } else {
+          foundUser.house = house._id
+          foundUser.save((err, userReturned) => {
+            if (err) {
+              res.json({message: "House Not Found"})
+              next(err)
+            } else {
+              var userReturnedObj = {firstName: userReturned.firstName,
+              color: userReturned.color}
+              house.housemate.push(userReturnedObj)
+              house.save((err, houseReturned) => {
                 if (err) {
-                console.log(err)
-                res.json({ message: "User not found" })
+                  console.log(err)
+                  next(err)
                 } else {
-                    foundUser.house = house._id;
-                    foundUser.save((err, userReturned) => {
-                        if (err) {
-                        next(err);
-                        } else {
-                            res.json(userReturned);
-                        }
-                    });
+                    res.json(houseReturned)
                 }
-            });
+              }) 
+            }
+          })
         }
     });
 });
+
+
+
 
 var port = 5000;
 app.listen(port, () => {

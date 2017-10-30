@@ -19,7 +19,7 @@ export default class GroceryItem extends Component {
       return (
         <tr>
           <td><ListGroup editable={false} selectTextOnFocus={false} >
-              <ListGroupItem className="list-item" style={{backgroundColor: this.props.item.color}} action onClick={() => this.selectorToggle(this.props.item._id)}>
+              <ListGroupItem className="list-item"  style ={{backgroundColor: this.props.item.color}} action onClick={() => this.selectorToggle(this.props.item._id)}>
              {this.props.item.name}
              </ListGroupItem></ListGroup></td>
           <td><ListGroup><ListGroupItem style={{backgroundColor: this.props.item.color}}>{this.props.item.quantity}</ListGroupItem></ListGroup></td>
