@@ -31,7 +31,7 @@ db.once('open', function () {
 
 app.use(bodyParser.json({ type: 'application/json' }));
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(expressSession({ secret: "lee is a fucking beast" }));
+app.use(expressSession({ secret: "" }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static('./potluck/build'));
@@ -427,6 +427,10 @@ app.put('/join', (req, res, next) => {
   };
 })
 })
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, './potluck/build/index.html'));
+});
 
 var port = process.env.PORT || 5000;
 app.listen(port, () => {
