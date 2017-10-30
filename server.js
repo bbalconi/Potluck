@@ -13,7 +13,6 @@ var uriUtil = require('mongodb-uri');
 var Item = require('./models/items.js');
 var cookieParser = require('cookie-parser');
 const nodemailer = require('nodemailer');
-// var exec = require('./exec.js');
 
 var mongodbUri = 'mongodb://localhost/items';
 var mongooseUri = uriUtil.formatMongoose(mongodbUri);
@@ -31,7 +30,7 @@ db.once('open', function () {
 
 app.use(bodyParser.json({ type: 'application/json' }));
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(expressSession({ secret: "mark rules" }));
+app.use(expressSession({ secret: "lee is a fucking beast" }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static('public'));
@@ -57,7 +56,6 @@ passport.use(new LocalStrategy({ username: "email", password: "password" },  (em
 )
 
 passport.serializeUser(function (user, done) {
-
   done(null, user._id);
 })
 
@@ -65,14 +63,12 @@ passport.deserializeUser(function (id, done) {
   User.findById(id, function (err, user) {
     if (err) {
     } else {
-      console.log(user)
       done(null, user);
     }
   })
 
 })
 
-//BEGIN CHECK IF EMAIL IS EMAIL
 function verifyEmail(email) {
   let emailReplaced = email.replace(/ /g, '');
   let emailSplit = emailReplaced.split(',');
@@ -87,14 +83,11 @@ function verifyEmail(email) {
       arr.push(emailSplit[i])
     }
   });
-  arr = arr.toString();
-  return arr;
+  return arr.toString();
 }
-//END CHECK IF EMAIL IS EMAIL
-//BEGIN MAIL HANDLING
+
 function inviteEmail(email) {
   let beenVerified = verifyEmail(email);
-  console.log(beenVerified);
   if (beenVerified != "") {
     nodemailer.createTestAccount((err, account) => {
       let transporter = nodemailer.createTransport({
@@ -125,12 +118,14 @@ function inviteEmail(email) {
       };
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-          return console.log(error);
+            console.log(error)
+            return error;
         }
       });
     });
   }
 }
+
 
 app.post('/items', function (req, res, next) {
   var item = new Item();
@@ -155,52 +150,21 @@ app.post('/items', function (req, res, next) {
 });
 
 app.get('/houses', function (req, res, next) {
-  if (req.user) {
-    House.findById(req.user.house, (err, item) => {
-      if (err) {
-        console.log(err);
-        next(err);
-      }
-    }).populate('items').exec((err, items) => {
-      if (items == null) {
-        console.log('oh well!')
-      } else {
-        res.json(items)
-      }
-    })
-  }
+    if (req.user) {
+        House.findById(req.user.house, (err, item) => {
+            if (err) {
+                console.log(err);
+                next(err);
+            }
+        }).populate('items').exec((err, items) => {
+            if (items != null) {
+                res.json(items.items);
+            }
+        });
+    }else {
+        res.json("Something went wrong.")
+    }
 });
-
-// app.put('/housemates/', (req, res, next) => {
-//   console.log(req.body);
-//   House.findOneAndUpdate({ houseName: req.user.houseName }, "housemates", (err, house) => {
-//     if (err) {
-//       console.log(err);
-//       console.log("ERROR HOUSE")
-//       next(err);
-//     } else {
-//       house.housemate.push({ firstName: req.body.firstName, color: req.body.color })
-//       house.save((err, housemateReturned) => {
-//         if (err) {
-//           console.log(err);
-//           console.log("ERROR PUSHING HOUSEMATE")
-//           next(err);
-//         } else {
-//           House.findById({ _id: req.user.house }, (err, house) => {
-//             if (err) {
-//               console.log(err);
-//               console.log("ERORR HOUSE BY ID ")
-//               next(err);
-              
-//             } else {
-//               res.json(house.housemate);
-//             }
-//           });
-//         }
-//       });
-//     };
-//   })
-// });
 
 app.put('/selector', (req, res, next) => {
   House.findByIdAndUpdate({ _id: req.user.house }, "items", (err, house) => {
@@ -281,10 +245,10 @@ app.put('/delete', (req, res, next) => {
     });
   })
 
+
 })
 
 app.post("/signup", (req, res, next) => {
-
   var user = new User();
   user.firstName = req.body.firstName;
   user.lastName = req.body.lastName;
@@ -301,26 +265,57 @@ app.post("/signup", (req, res, next) => {
         message: err,
         success: false
       });
-    } else {
+    } else if(req.body.password === ""){
+        res.json({
+            found: false,
+            message: "Please enter a password",
+            success: false
+        });
+    }else if(verifyEmail(user.email).length <= 0){
+        res.json({
+            found: false,
+            message: "Invalid email",
+            success: false
+        });
+    }else if(user.firstName.length <= 0){
+        res.json({
+            found: false,
+            message: "Input your first name",
+            success: false
+        });
+    }else if(user.lastName.length <= 0){
+        res.json({
+            found: false,
+            message: "Input your last name",
+            success: false
+        });
+    }else if(user.color.length <= 0){
+        res.json({
+            found: false,
+            message: "Please select a color.",
+            success: false
+        });
+    }else{
       user.save((error, userReturned) => {
-        console.log('VVVV error')
         if (error) {
-          console.log(error);
-          res.json({
-            message: 'An account is already associated with that email address.'
-          })
-        } else {
+            console.log(error);
+            res.json({
+                found: true,
+                message: 'An account is already associated with that email address.',
+                success: false
+            });
+        }else{
           res.json({
             userReturned: userReturned,
             found: true,
             message: "Account created.",
             success: true
-          })
+          });
         }
-      })
+      });
     }
-  })
-})
+  });
+});
 
 app.post('/login', function (req, res, next) {
   passport.authenticate('local', function (err, user) {
@@ -337,7 +332,7 @@ app.post('/login', function (req, res, next) {
         }
       })
     } else {
-      res.json({ found: false, success: false, message: "password and username don't match" })
+      res.json({ found: false, success: false, message: "Password and username don't match." })
     }
   })(req, res, next);
   var email = req.body.email;
@@ -345,12 +340,10 @@ app.post('/login', function (req, res, next) {
 });
 
 app.get('/logout', (req, res) => {
-   req.logout(); 
-   req.session.destroy(); 
-   res.redirect('/'); 
-  })
-
-
+   req.logout();
+   req.session.destroy();
+   res.redirect('/');
+});
 
 app.post("/create-house", (req, res, next) => {
   var house = new House();
@@ -385,9 +378,7 @@ app.post("/create-house", (req, res, next) => {
       });
     }
   })
-})
-
-
+});
 
 app.get('/user', (req, res, next) => {
   User.findById(req.user._id, (err, foundUser) => {
@@ -395,25 +386,19 @@ app.get('/user', (req, res, next) => {
       console.log(err)
     }
   }).populate('house').exec((err, user) => {
-
     res.json(user)
   });
 });
 
 app.put('/join', (req, res, next) => {
-  console.log(req.body)
-  console.log('REQ BODY ^')
   House.findOne({ "houseName": req.body.joinHouse }, "password users housemate", (err, house) => {
-    console.log("LOOK UP")
     if (err) {
       console.log(err)
-      console.log("Got here")
       next(err)
     } else if (!house || (house.password != req.body.password)) {
       res.json({ message: "Something went wrong! Please try again." });
     } 
     else if (house.password == req.body.password) {
-          console.log("Did it get here?")
       User.findById(req.user._id, (err, foundUser) => {
         if (err) {
           console.log(err)
@@ -422,18 +407,11 @@ app.put('/join', (req, res, next) => {
           foundUser.house = house._id
           foundUser.save((err, userReturned) => {
             if (err) {
-              console.log("line 424")
               res.json({message: "House Not Found"})
               next(err)
             } else {
-              console.log(userReturned);
-              console.log("^^USER RETURNED---------------------------------")
               var userReturnedObj = {firstName: userReturned.firstName,
               color: userReturned.color}
-              console.log(house);
-              console.log("HOUSE")
-              console.log(house.housemate)
-              console.log("HOUSE . HOUSEMATE")
               house.housemate.push(userReturnedObj)
               house.save((err, houseReturned) => {
                 if (err) {
@@ -441,17 +419,12 @@ app.put('/join', (req, res, next) => {
                   next(err)
                 } else {
                     res.json(houseReturned)
-                    console.log(houseReturned)
-                    console.log("^^ HOUSE RETURNED")
                 }
-              })
-              
+              }) 
             }
           })
         }
-      })
-    }
-  })
+    });
 });
 
 

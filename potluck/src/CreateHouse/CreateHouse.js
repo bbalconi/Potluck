@@ -13,12 +13,14 @@ class House extends Component {
     this.inputpasswordChange = this.inputpasswordChange.bind(this);
     this.handleCreate = this.handleCreate.bind(this);
     this.submitCreate = this.submitCreate.bind(this);
+    this.addUser = this.addUser.bind(this);
     this.state = {
       houseName: '',
       roommates: '',
       password: '',
       confirmPassword: '',
-      message: ''
+      message: '',
+      created: false
     }
   }
   submitCreate(signupObj) {
@@ -26,48 +28,71 @@ class House extends Component {
       houseName: signupObj.houseName,
       password: signupObj.password,
       roommates: signupObj.roommates
-    }
-    ).then((userObj) => {
-      console.log(userObj);
+    }).then((userObj) => {
       if (userObj !== undefined) {
         this.setState({
-          message: userObj.data.message
+          message: userObj.data.message,
+          created: true
         });
       } else {
-        this.setState({message: userObj.data.message});
+        console.log('Something went wrong.');
       }
     });
-  };
+  }
+
+  addUser(){
+    axios.put('/join', {
+        joinHouse: this.state.houseName,
+        password: this.state.password
+    }).then((userObj) => {
+        console.log(userObj)
+        this.setState({
+            message: userObj.data.message,
+            joinHouse: '',
+            password: '',
+            created: false
+        });
+        this.props.history.push("/main");
+    });
+  }
+
   handleCreate() {
     if (this.state.password === this.state.confirmPassword) {
-      this.submitCreate({
-        houseName: this.state.houseName,
-        password: this.state.password,
-        roommates: this.state.roommates
-      })
-      this.setState({
-        houseName: "",
-        password: "",
-        roommates: "",
-        confirmPassword: ''
-      })
-      this.props.history.push("/join-house");
-
+        if(this.state.houseName.length >= 1){
+            this.submitCreate({
+                houseName: this.state.houseName,
+                password: this.state.password,
+                roommates: this.state.roommates
+            });
+            this.setState({
+                houseName: "",
+                password: "",
+                roommates: "",
+                confirmPassword: ''
+            });
+        }else{
+            this.setState({
+                message: "Please enter a name.",
+                houseName: '',
+                password: '',
+                roommates: '',
+                confirmPassword: '' 
+            })
+        }
     } else {
       this.setState({
-        message: "Passwords Don't Match",
+        message: "Passwords don't match.",
         houseName: '',
         password: '',
         roommates: '',
         confirmPassword: '' 
-      })
-    } 
-
+      });
+    }
   }
+
   inputHouseName(event) {
     this.setState({ houseName: event.target.value });
   }
-
   inputpasswordChange(event) {
     this.setState({ password: event.target.value });
   }
@@ -77,6 +102,16 @@ class House extends Component {
   confirmPassword(event) {
     this.setState({ confirmPassword: event.target.value });
   }
+  
+  componentDidMount(){
+      if(this.state.created){
+        this.addUser();
+        this.setState({
+            created: false
+        })
+      }
+  }
+
   render() {
     console.log(this.state);
     const isEnabled = this.state.password.length > 0;
