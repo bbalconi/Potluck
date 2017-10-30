@@ -6,10 +6,9 @@ import Login from "../Login/Login";
 import Navvy from "../Nav/Nav.js";
 import House from "../CreateHouse/CreateHouse.js";
 import JoinHouse from "../JoinHouse/JoinHouse.js";
-import { Router, hashHistory } from 'react-router';
 import Timer from "../timer.js";
 import {
-    BrowserRouter as Router,
+    HashRouter as Router,
     Route,
 } from 'react-router-dom';
 var axios = require('axios');
@@ -62,7 +61,7 @@ class App extends Component {
     }
         if(sessionStorage.name != null){
             return (
-                <Router history={ hashHistory }>
+                <Router>
                 <div className='bg'>
                     <Route path='/' render={()=><Navvy logOut={this.logOut} currentUser={this.state.currentUser}/>} />
                     <Route path='/Login' render={() => <Login submitLogin={this.submitLogin} />}/>
@@ -77,7 +76,7 @@ class App extends Component {
             )
         }else{
             return (
-                <Router history={ hashHistory }>
+                <Router>
                 <div className='bg'>
                     <Route path='/' render={()=><Navvy logOut={this.logOut} currentUser={this.state.currentUser}/>} />
                     <Route path='/Login' render={() => <Login submitLogin={this.submitLogin} />}/>
