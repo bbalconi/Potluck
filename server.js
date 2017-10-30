@@ -157,8 +157,9 @@ app.get('/houses', function (req, res, next) {
                 next(err);
             }
         }).populate('items').exec((err, items) => {
+          console.log(items)
             if (items != null) {
-                res.json(items.items);
+                res.json(items);
             }
         });
     }else {
@@ -391,7 +392,7 @@ app.get('/user', (req, res, next) => {
 });
 
 app.put('/join', (req, res, next) => {
-    House.findOne({ "houseName": req.body.joinHouse }, "password users", (err, house) => {
+    House.findOne({ "houseName": req.body.joinHouse }, "password users housemate", (err, house) => {
         if (err) {
             next(err);
         } else if (!house) {
@@ -407,14 +408,26 @@ app.put('/join', (req, res, next) => {
                         if (err) {
                         next(err);
                         } else {
-                            res.json(userReturned);
-                        }
+                          var userReturnedObj = {
+                            firstName: userReturned.firstName,
+                            color: userReturned.color
+                          } 
+                          house.housemate.push(userReturnedObj)
+                          house.save((err, houseReturned) => {
+                            if (err) {
+                              console.log(err)
+                              next(err)
+                            } else {
+                                res.json(houseReturned)
+                          }
                     });
                 }
             });
         }
     });
-});
+  };
+})
+})
 
 var port = 5000;
 app.listen(port, () => {

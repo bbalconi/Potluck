@@ -4,6 +4,7 @@ import GroceryInputs from '../GroceryInputs/GroceryInputs';
 import './Main.css';
 import openSocket from 'socket.io-client';
 import GroceryList from "../GroceryList/GroceryList";
+import GroceryInstructions from "../GroceryInstructions/GroceryInstructions"
 const socket = openSocket('192.168.0.161:8000');
 const axios = require('axios');
 
@@ -25,7 +26,8 @@ export default class Main extends Component {
     this.state = {
       initialized: true,
       checkList: true,
-      items: []
+      items: [],
+      house: {}
     }
   }
 
@@ -76,17 +78,20 @@ selectorToServer(id, toggleValue) {
 getList(){
   axios.get('/houses')
   .then((data)=>{
+    console.log(data)
       if (this.state.initialized) {
         this.setState({
-          items:data.data,
-          checkList: false
+          items:data.data.items,
+          checkList: false,
+          house: data.data
         });
 
     } else { 
         this.setState({
-        items:data.data,
+        items:data.data.items,
         initialized: true,
-        checkList: false
+        checkList: false,
+        house: data.data
         });
     }
     if (this.state.items) {
@@ -112,6 +117,7 @@ componentDidMount(){
   }
 
   render(){
+    console.log(this.state)
       if(this.state.checkList){
         this.getList();
       }
@@ -129,6 +135,10 @@ componentDidMount(){
     } else {
         return(
             <div className='main'>
+           <GroceryInstructions 
+                getList={this.getList}
+                house={this.state.house}
+            />
             <GroceryInputs className='grocery-inputs' 
                 sendData={this.sendData} 
                 items={this.state.items}

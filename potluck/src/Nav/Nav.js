@@ -39,10 +39,10 @@ class Navvy extends Component {
                                 <NavLink href="/profile" style={{color: 'black'}}>Hello, {name}!</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="/house" style={{color: 'black'}} >Create House</NavLink>
+                                <NavLink href="/house" style={{color: 'black'}} >Create List</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="/join-house" style={{color: 'black'}}>Join House</NavLink>
+                                <NavLink href="/join-house" style={{color: 'black'}}>Join List</NavLink>
                             </NavItem>
                             <NavItem>
                                 <Button action onClick={this.navLogOut} >Logout</Button>

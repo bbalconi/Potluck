@@ -56,6 +56,9 @@ class App extends Component {
   }
 )} 
   render() {
+    ()=>{
+      
+    }
         if(sessionStorage.name != null){
             return (
                 <Router>

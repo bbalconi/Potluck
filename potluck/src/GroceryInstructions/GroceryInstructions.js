@@ -29,7 +29,7 @@ export default class GroceryInstructions extends Component {
             by clicking on the items. Watch 
             them turn your user specific color!
             </CardBody>{' '}
-            <CardSubtitle className="key-header">HALLPPP</CardSubtitle>
+            <CardSubtitle className="key-header">HOUSEMATES KEY</CardSubtitle>
         </Card>
         <Table size="sm" className='key-table' >
           <tbody> 
@@ -52,5 +52,4 @@ export default class GroceryInstructions extends Component {
     )
   }
  }
-
 }
