@@ -1,4 +1,4 @@
-/*import openSocket from 'socket.io-client';
+import openSocket from 'socket.io-client';
 import React, { Component } from 'react';
 const  socket = openSocket('https://localhost:8000');
 
@@ -28,4 +28,4 @@ export default class Timer extends Component{
             </div>
         );
     }
-}*/
+}

@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Card, CardTitle, CardSubtitle, CardBody, Col } from 'reactstrap';
 import GroceryInputs from '../GroceryInputs/GroceryInputs';
 import './Main.css';
-/*import openSocket from 'socket.io-client';*/
+import openSocket from 'socket.io-client';
 import GroceryList from "../GroceryList/GroceryList";
 import GroceryInstructions from "../GroceryInstructions/GroceryInstructions"
-/*const socket = openSocket('192.168.1.23:8000');*/
+const socket = openSocket('https://potluck0.herokuapp.com/');
 const axios = require('axios');
 
 export default class Main extends Component {
@@ -31,10 +31,10 @@ export default class Main extends Component {
     }
   }
 
-/*list(cb) {
+list(cb) {
    socket.on('checkList', list => cb(null, list));
    socket.emit('getList', 1000);
- } */
+ }
 
 sendData(foodObj) {
   axios.put('/houses', {
