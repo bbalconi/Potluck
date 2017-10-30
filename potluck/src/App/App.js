@@ -69,7 +69,6 @@ class App extends Component {
                     <Route path='/Main' render={()=> <Main/>}/>
                     <Route path='/House' render={()=> <House/>}/>
                     <Route path='/Join-House' render={()=> <JoinHouse />}/>
-                    <Route path='/timer' render={()=> <Timer />}/>
                 </div>
                 </Router>
             
@@ -81,7 +80,6 @@ class App extends Component {
                     <Route path='/' render={()=><Navvy logOut={this.logOut} currentUser={this.state.currentUser}/>} />
                     <Route path='/Login' render={() => <Login submitLogin={this.submitLogin} />}/>
                     <Route path='/Signup' render={()=> <SignUp/>}/>
-                    <Route path='/timer' render={()=> <Timer/>}/>
                 </div>
                 </Router>
             )

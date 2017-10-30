@@ -13,7 +13,7 @@ var uriUtil = require('mongodb-uri');
 var Item = require('./models/items.js');
 var cookieParser = require('cookie-parser');
 const nodemailer = require('nodemailer');
-require('dotenv').config();
+require('dotenv');
 
 var mongodbUri = process.env.mongoStuff;
 var mongooseUri = uriUtil.formatMongoose(mongodbUri);
