@@ -15,7 +15,10 @@ class JoinHouse extends Component{
     this.state = { 
       joinHouse: '',
       password: '', 
-      message: ''
+      message: '',
+      firstName: '',
+      color: '',
+      housemates: []
     }
   }
 
@@ -25,6 +28,8 @@ class JoinHouse extends Component{
   inputpasswordChange(event) {
     this.setState({password: event.target.value});
   }
+
+ 
   joinIt() {
     axios.put('/join', {
             joinHouse: this.state.joinHouse,
@@ -38,14 +43,18 @@ class JoinHouse extends Component{
         })  
       }
       else {
+        console.log(userObj)
         this.setState({
-          joinHouse: '',
-          password: '',
+          housemates: userObj.data.housemate
         });
         this.props.history.push("/main");
       }
     }); 
   }
+
+
+
+
 
 _handleKeyPress(e){
   if(e.key === "Enter"){
@@ -53,8 +62,10 @@ _handleKeyPress(e){
   }
 }
   render(){ 
+    console.log(this.state.housemates)
     return(
       <div className='joinhouse'>
+        
         <Col className='join-col'></Col>
         <Card className='joinhouse-card'>
           <CardBody>
@@ -74,6 +85,7 @@ _handleKeyPress(e){
         <CardSubtitle className='error' style={{color:'red'}}> {this.state.message} </CardSubtitle>{' '}
     </CardBody>
     </Card>
+    
       </div>
     );
   };

@@ -13,14 +13,14 @@ export default class Main extends Component {
     this.sendData = this.sendData.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
     this.selectorToServer = this.selectorToServer.bind(this);
-    this.getHouseName = this.getHouseName.bind(this);
-    this.getUser = this.getUser.bind(this);
     this.state = {
-      initialized: false
+      initialized: false,
+      house: null
     }
 }
 
 sendData(foodObj) {
+  console.log(foodObj)
   axios.put('/houses', {
       name: foodObj.name,
       quantity: foodObj.quantity,
@@ -30,11 +30,6 @@ sendData(foodObj) {
     });
   });
 };
-
-getUser() {
-  axios.get('/user').then((res)=>{
-  })
-}
 
 
 deleteItem(id) {
@@ -68,37 +63,24 @@ getList(){
     });
   }
   axios.get('/houses')
-  .then((data)=>{
-    console.log(data);
+  .then((res)=>{
+    console.log(res.data);
+    
     this.setState({
-      items:data.data.items,
-      initialized: true
+      items: res.data.items,
+      initialized: true, 
+      house: res.data
     });
     
   })
 }
 
-getHouseName(){
-  if (this.state.initialized) {
-    this.setState({
-      initialized: false
-    });
-  }
-  axios.get('/houses')
-  .then((data)=>{
-    console.log(data);
-    this.setState({
-      houseName: data.data.houseName,
-      initialized: true
-    });
 
-  })
-}
+
 
 componentDidMount(){
   this.getList();
-  this.getUser();
-  this.getHouseName();
+ 
 }
 
   _handleKeyPress = (e) => {
@@ -124,7 +106,9 @@ componentDidMount(){
   return(
     <div className='main'>
       <GroceryInstructions 
-        getHouseName={this.state.houseName}/>
+        getList={this.getList}
+        house={this.state.house}
+        />
       <GroceryInputs className='grocery-inputs' 
         sendData={this.sendData} 
         items={this.state.items}

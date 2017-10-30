@@ -165,13 +165,42 @@ app.get('/houses', function (req, res, next) {
       if (items == null) {
         console.log('oh well!')
       } else {
-        console.log(items)
-        console.log("^^HOUSES CONSOLE LOG ITEMS")
         res.json(items)
       }
     })
   }
 });
+
+// app.put('/housemates/', (req, res, next) => {
+//   console.log(req.body);
+//   House.findOneAndUpdate({ houseName: req.user.houseName }, "housemates", (err, house) => {
+//     if (err) {
+//       console.log(err);
+//       console.log("ERROR HOUSE")
+//       next(err);
+//     } else {
+//       house.housemate.push({ firstName: req.body.firstName, color: req.body.color })
+//       house.save((err, housemateReturned) => {
+//         if (err) {
+//           console.log(err);
+//           console.log("ERROR PUSHING HOUSEMATE")
+//           next(err);
+//         } else {
+//           House.findById({ _id: req.user.house }, (err, house) => {
+//             if (err) {
+//               console.log(err);
+//               console.log("ERORR HOUSE BY ID ")
+//               next(err);
+              
+//             } else {
+//               res.json(house.housemate);
+//             }
+//           });
+//         }
+//       });
+//     };
+//   })
+// });
 
 app.put('/selector', (req, res, next) => {
   House.findByIdAndUpdate({ _id: req.user.house }, "items", (err, house) => {
@@ -322,7 +351,7 @@ app.get('/logout', (req, res) => {
   })
 
 
-//why is it User.findOne
+
 app.post("/create-house", (req, res, next) => {
   var house = new House();
   house.houseName = req.body.houseName;
@@ -366,21 +395,25 @@ app.get('/user', (req, res, next) => {
       console.log(err)
     }
   }).populate('house').exec((err, user) => {
-    console.log(user);
+
     res.json(user)
   });
 });
 
 app.put('/join', (req, res, next) => {
-  console.log(req.user)
-  House.findOne({ "houseName": req.body.joinHouse }, "password users", (err, house) => {
+  console.log(req.body)
+  console.log('REQ BODY ^')
+  House.findOne({ "houseName": req.body.joinHouse }, "password users housemate", (err, house) => {
+    console.log("LOOK UP")
     if (err) {
+      console.log(err)
+      console.log("Got here")
       next(err)
     } else if (!house || (house.password != req.body.password)) {
       res.json({ message: "Something went wrong! Please try again." });
     } 
     else if (house.password == req.body.password) {
-      console.log(req.user)
+          console.log("Did it get here?")
       User.findById(req.user._id, (err, foundUser) => {
         if (err) {
           console.log(err)
@@ -389,9 +422,30 @@ app.put('/join', (req, res, next) => {
           foundUser.house = house._id
           foundUser.save((err, userReturned) => {
             if (err) {
+              console.log("line 424")
+              res.json({message: "House Not Found"})
               next(err)
             } else {
-              res.json(userReturned)
+              console.log(userReturned);
+              console.log("^^USER RETURNED---------------------------------")
+              var userReturnedObj = {firstName: userReturned.firstName,
+              color: userReturned.color}
+              console.log(house);
+              console.log("HOUSE")
+              console.log(house.housemate)
+              console.log("HOUSE . HOUSEMATE")
+              house.housemate.push(userReturnedObj)
+              house.save((err, houseReturned) => {
+                if (err) {
+                  console.log(err)
+                  next(err)
+                } else {
+                    res.json(houseReturned)
+                    console.log(houseReturned)
+                    console.log("^^ HOUSE RETURNED")
+                }
+              })
+              
             }
           })
         }
