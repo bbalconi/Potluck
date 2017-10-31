@@ -51,8 +51,8 @@ export default class Main extends Component {
   };
 
   getUser() {
-    axios.get('/user').then((res) => {
-      axios.get('/port').then((res)=>{
+    axios.post('/user').then((res) => {
+      axios.post('/port').then((res)=>{
         var socket = openSocket('http://potluck-react.herokuapp.com/:' + res.data);
       });
     })
@@ -82,7 +82,7 @@ export default class Main extends Component {
   }
 
   getList() {
-    axios.get('/houses')
+    axios.post('/houses')
       .then((data) => {
         if (this.state.initialized) {
           this.setState({

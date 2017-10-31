@@ -49,7 +49,7 @@ class App extends Component {
 
   logOut(){
     return new Promise((resolve, reject)=>{      
-    axios.get('/logout').then((res)=>{
+    axios.post('/logout').then((res)=>{
         sessionStorage.removeItem('name', "");
         resolve(res.data);      
       })

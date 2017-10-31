@@ -147,10 +147,13 @@ ioServer.on('connection', (client)=>{
   });
   client.on('disconnect', ()=>{console.log("client disconnected")});
 });
-  
-app.get('/*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'potluck', 'build', 'index.html'));
-});
+// TODO: wrap this in an production variable condition
+// Gross workaround for production when user types in react route
+// in url bar. Per: https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md
+
+ app.get('/*', function (req, res) {
+   res.sendFile(path.join(__dirname, 'potluck', 'build', 'index.html'));
+ });
 
 app.post('/items', function (req, res, next) {
   var item = new Item();
@@ -174,6 +177,7 @@ app.post('/items', function (req, res, next) {
   });
 });
 
+//change to post
 app.get('/port', (req, res)=>{
   if (process.env.PORT){
     res.json(process.env.PORT);
@@ -382,7 +386,8 @@ app.post('/login', function (req, res, next) {
   var password = req.body.password;
 });
 
-app.get('/logout', (req, res) => {
+//change to post
+app.post('/logout', (req, res) => {
    req.logout();
    req.session.destroy();
    res.redirect('/');
@@ -422,7 +427,8 @@ app.post("/create-house", (req, res, next) => {
   })
 });
 
-app.get('/user', (req, res, next) => {
+//change to post
+app.post('/user', (req, res, next) => {
   User.findById(req.user._id, (err, foundUser) => {
     if (err) {
       console.log(err)
