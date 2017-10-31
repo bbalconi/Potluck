@@ -147,6 +147,9 @@ ioServer.on('connection', (client)=>{
   client.on('disconnect', ()=>{console.log("client disconnected")});
 });
   
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 app.post('/items', function (req, res, next) {
   var item = new Item();
