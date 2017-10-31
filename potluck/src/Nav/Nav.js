@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { Collapse, Button, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
 import './Nav.css'
 
@@ -36,13 +36,13 @@ class Navvy extends Component {
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto"  navbar>
                             <NavItem>
-                                <NavLink href="/profile" style={{color: 'black'}}>Hello, {name}!</NavLink>
+                                <Link href="/profile" style={{color: 'black'}}>Hello, {name}!</Link>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="/house" style={{color: 'black'}} >Create List</NavLink>
+                                <Link href="/house" style={{color: 'black'}} >Create List</Link>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="/join-house" style={{color: 'black'}}>Join List</NavLink>
+                                <Link href="/join-house" style={{color: 'black'}}>Join List</Link>
                             </NavItem>
                             <NavItem>
                                 <Button action onClick={this.navLogOut} >Logout</Button>
@@ -61,10 +61,10 @@ class Navvy extends Component {
                 <Collapse isOpen={this.state.isOpen} navbar>
                     <Nav className="ml-auto" navbar>
                         <NavItem>
-                            <NavLink href="/signUp" style={{color: 'black'}}>SignUp</NavLink>
+                            <Link href="/signUp" style={{color: 'black'}}>SignUp</Link>
                         </NavItem>
                         <NavItem>
-                            <NavLink href="/login" style={{color: 'black'}}>Login</NavLink>
+                            <Link href="/login" style={{color: 'black'}}>Login</Link>
                         </NavItem>
                     </Nav>
                 </Collapse>
