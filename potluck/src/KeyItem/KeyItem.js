@@ -11,7 +11,6 @@ export default class KeyItem extends Component {
 
 
   render() {
-    console.log(this.props); 
     var userColor = this.props.housemate.color;
     var userFirstName = this.props.housemate.firstName
 

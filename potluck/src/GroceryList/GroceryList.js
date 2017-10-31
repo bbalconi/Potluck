@@ -17,7 +17,6 @@ class GroceryList extends Component {
     }  
     
     render(){
-      console.log(this.props)
       let arrayCheck = this.props.items
       if (arrayCheck != [] && typeof arrayCheck != 'string' && arrayCheck != undefined) {
         let sortedBySelector = this.sortFunc(this.props.items);

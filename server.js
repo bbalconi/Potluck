@@ -1,5 +1,7 @@
-let express = require("express");
-let app = express();
+var express = require('express');
+var app = require("express")();
+var server = require('http').Server(app);
+var io = require('socket.io');
 let bodyParser = require("body-parser");
 var fetch = require('node-fetch');
 var User = require("./models/users");
@@ -13,15 +15,21 @@ var uriUtil = require('mongodb-uri');
 var Item = require('./models/items.js');
 var cookieParser = require('cookie-parser');
 const nodemailer = require('nodemailer');
-require('dotenv');
+var http = require('http');
+require('dotenv').config();
 
 var mongodbUri = process.env.mongoStuff;
+console.log(mongodbUri);
 var mongooseUri = uriUtil.formatMongoose(mongodbUri);
 var options = {
   server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
   replset: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } }
 };
-
+var allowedOrigins = "http://localhost:* http://127.0.0.1:*";
+var ioServer = io(server, {
+  origins: allowedOrigins
+});
+ console.log(ioServer);
 mongoose.connect(mongooseUri, options);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -31,10 +39,10 @@ db.once('open', function () {
 
 app.use(bodyParser.json({ type: 'application/json' }));
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(expressSession({ secret: "" }));
+app.use(expressSession({ secret: "moby" }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static('./potluck/build'));
+app.use(express.static('public'));
 
 passport.use(new LocalStrategy({ username: "email", password: "password" },  (email, password, done) => {
   User.findOne({
@@ -126,6 +134,22 @@ function inviteEmail(email) {
   }
 }
 
+function sendThing(){
+  return true
+}
+
+ioServer.on('connection', (client)=>{
+  console.log("client connected")
+  client.on('getList', (interval)=>{
+      console.log("client subbed to getList");
+      setInterval(()=>{
+          client.emit('checkList', sendThing());
+      }, interval);
+  });
+  client.on('disconnect', ()=>{console.log("client disconnected")});
+});
+  
+
 app.post('/items', function (req, res, next) {
   var item = new Item();
   item.name = req.body.name
@@ -156,7 +180,7 @@ app.get('/houses', function (req, res, next) {
                 next(err);
             }
         }).populate('items').exec((err, items) => {
-          console.log(items)
+          //console.log(items)
             if (items != null) {
                 res.json(items);
             }
@@ -251,6 +275,9 @@ app.put('/delete', (req, res, next) => {
 
 app.post("/signup", (req, res, next) => {
   var user = new User();
+  console.log(user)
+  console.log('^^254')
+  
   user.firstName = req.body.firstName;
   user.lastName = req.body.lastName;
   user.email = req.body.email;
@@ -260,44 +287,49 @@ app.post("/signup", (req, res, next) => {
   User.findOne({
     email: user.email
   }, (err, foundUser) => {
+    console.log(foundUser)
+    console.log('^^266')
+    
     if (err) {
       res.json({
         found: false,
         message: err,
         success: false
       });
-    } else if(req.body.password === ""){
+    } else if (req.body.password === ""){
         res.json({
             found: false,
             message: "Please enter a password",
             success: false
         });
-    }else if(verifyEmail(user.email).length <= 0){
+    } else if (verifyEmail(user.email).length <= 0){
         res.json({
             found: false,
             message: "Invalid email",
             success: false
         });
-    }else if(user.firstName.length <= 0){
+    } else if (user.firstName.length <= 0){
         res.json({
             found: false,
             message: "Input your first name",
             success: false
         });
-    }else if(user.lastName.length <= 0){
+    } else if (user.lastName.length <= 0){
         res.json({
             found: false,
             message: "Input your last name",
             success: false
         });
-    }else if(user.color.length <= 0){
+    } else if (user.color.length <= 0){
         res.json({
             found: false,
             message: "Please select a color.",
             success: false
         });
-    }else{
+    } else {
+      //if user = null and err is null
       user.save((error, userReturned) => {
+         console.log(userReturned);
         if (error) {
             console.log(error);
             res.json({
@@ -305,7 +337,7 @@ app.post("/signup", (req, res, next) => {
                 message: 'An account is already associated with that email address.',
                 success: false
             });
-        }else{
+        } else {
           res.json({
             userReturned: userReturned,
             found: true,
@@ -428,8 +460,7 @@ app.put('/join', (req, res, next) => {
 })
 })
 
-
 var port = process.env.PORT || 5000;
-app.listen(port, () => {
+server.listen(port, () => {
   console.log('listening on port ' + port);
 });
