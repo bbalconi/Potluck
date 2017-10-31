@@ -31,7 +31,7 @@ class Navvy extends Component {
         return(
             <div id="navvy">
                 <Navbar light expand="md">
-                    <NavbarBrand href="/main"><img src='./images/1.png'/></NavbarBrand>
+                    <Link to="/main"><img src='./images/1.png'/></Link>
                     <NavbarToggler onClick={this.toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto"  navbar>
