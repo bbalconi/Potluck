@@ -42,7 +42,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressSession({ secret: "moby" }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static('public'));
+app.use(express.static('./potluck/build'));
 
 passport.use(new LocalStrategy({ username: "email", password: "password" },  (email, password, done) => {
   User.findOne({
