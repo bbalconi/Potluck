@@ -16,6 +16,7 @@ var Item = require('./models/items.js');
 var cookieParser = require('cookie-parser');
 const nodemailer = require('nodemailer');
 var http = require('http');
+var path  = require('path');
 require('dotenv').config();
 
 var mongodbUri = process.env.mongoStuff;
@@ -148,7 +149,7 @@ ioServer.on('connection', (client)=>{
 });
   
 app.get('/*', function (req, res) {
-  res.sendFile('./potluck/index.html');
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 app.post('/items', function (req, res, next) {
