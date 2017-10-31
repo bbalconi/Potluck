@@ -5,7 +5,7 @@ import './Main.css';
 import openSocket from 'socket.io-client';
 import GroceryList from "../GroceryList/GroceryList";
 import GroceryInstructions from "../GroceryInstructions/GroceryInstructions"
-const socket = openSocket('http://potluck-react.herokuapp.com/');
+const socket = openSocket('http://potluck-react.herokuapp.com/:' + process.env.PORT);
 const axios = require('axios');
 
 export default class Main extends Component {
