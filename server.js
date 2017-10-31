@@ -19,7 +19,6 @@ var http = require('http');
 require('dotenv').config();
 
 var mongodbUri = process.env.mongoStuff;
-console.log(mongodbUri);
 var mongooseUri = uriUtil.formatMongoose(mongodbUri);
 var options = {
   server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
@@ -29,7 +28,6 @@ var allowedOrigins = "http://localhost:* http://127.0.0.1:*";
 var ioServer = io(server, {
   origins: allowedOrigins
 });
- console.log(ioServer);
 mongoose.connect(mongooseUri, options);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
