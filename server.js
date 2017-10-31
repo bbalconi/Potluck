@@ -178,7 +178,7 @@ app.post('/items', function (req, res, next) {
 });
 
 //change to post
-app.get('/port', (req, res)=>{
+app.post('/port', (req, res)=>{
   if (process.env.PORT){
     res.json(process.env.PORT);
   } else {
@@ -186,7 +186,7 @@ app.get('/port', (req, res)=>{
   }
 });
 
-app.get('/houses', function (req, res, next) {
+app.post('/houses', function (req, res, next) {
     if (req.user) {
         House.findById(req.user.house, (err, item) => {
             if (err) {
