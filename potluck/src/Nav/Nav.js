@@ -36,13 +36,13 @@ class Navvy extends Component {
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto"  navbar>
                             <NavItem>
-                                <Link href="/profile" style={{color: 'black'}}>Hello, {name}!</Link>
+                                <Link to="/profile" style={{color: 'black'}}>Hello, {name}!</Link>
                             </NavItem>
                             <NavItem>
-                                <Link href="/house" style={{color: 'black'}} >Create List</Link>
+                                <Link to="/house" style={{color: 'black'}} >Create List</Link>
                             </NavItem>
                             <NavItem>
-                                <Link href="/join-house" style={{color: 'black'}}>Join List</Link>
+                                <Link to="/join-house" style={{color: 'black'}}>Join List</Link>
                             </NavItem>
                             <NavItem>
                                 <Button action onClick={this.navLogOut} >Logout</Button>
@@ -61,10 +61,10 @@ class Navvy extends Component {
                 <Collapse isOpen={this.state.isOpen} navbar>
                     <Nav className="ml-auto" navbar>
                         <NavItem>
-                            <Link href="/signUp" style={{color: 'black'}}>SignUp</Link>
+                            <Link to="/signUp" style={{color: 'black'}}>SignUp</Link>
                         </NavItem>
                         <NavItem>
-                            <Link href="/login" style={{color: 'black'}}>Login</Link>
+                            <Link to="/login" style={{color: 'black'}}>Login</Link>
                         </NavItem>
                     </Nav>
                 </Collapse>
