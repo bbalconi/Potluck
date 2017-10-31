@@ -26,7 +26,7 @@ class Navvy extends Component {
   }
 
   render(){
-    if (sessionStorage.getItem('name') != null) {
+    //if (sessionStorage.getItem('name') != null) {
         let name = sessionStorage.getItem("name");
         return(
             <div id="navvy">
@@ -45,6 +45,12 @@ class Navvy extends Component {
                                 <Link to="/join-house" style={{color: 'black'}}>Join List</Link>
                             </NavItem>
                             <NavItem>
+                            <Link to="/signUp" style={{color: 'black'}}>SignUp</Link>
+                        </NavItem>
+                        <NavItem>
+                            <Link to="/login" style={{color: 'black'}}>Login</Link>
+                        </NavItem>
+                            <NavItem>
                                 <Button action onClick={this.navLogOut} >Logout</Button>
                             </NavItem>
                         </Nav>
@@ -52,26 +58,26 @@ class Navvy extends Component {
                 </Navbar>
             </div>
         )
-    } else {
-        return(                                                                                   
-        <div id="navvy">
-            <Navbar light expand="md">
-                <NavbarBrand className='nav-brand' href="/main"><img src='./images/1.png'/></NavbarBrand>
-                <NavbarToggler onClick={this.toggle} />
-                <Collapse isOpen={this.state.isOpen} navbar>
-                    <Nav className="ml-auto" navbar>
-                        <NavItem>
-                            <Link to="/signUp" style={{color: 'black'}}>SignUp</Link>
-                        </NavItem>
-                        <NavItem>
-                            <Link to="/login" style={{color: 'black'}}>Login</Link>
-                        </NavItem>
-                    </Nav>
-                </Collapse>
-            </Navbar>
-        </div>
-    )
-  }
+  //   } else {
+  //       return(                                                                                   
+  //       <div id="navvy">
+  //           <Navbar light expand="md">
+  //               <NavbarBrand className='nav-brand' href="/main"><img src='./images/1.png'/></NavbarBrand>
+  //               <NavbarToggler onClick={this.toggle} />
+  //               <Collapse isOpen={this.state.isOpen} navbar>
+  //                   <Nav className="ml-auto" navbar>
+  //                       <NavItem>
+  //                           <Link to="/signUp" style={{color: 'black'}}>SignUp</Link>
+  //                       </NavItem>
+  //                       <NavItem>
+  //                           <Link to="/login" style={{color: 'black'}}>Login</Link>
+  //                       </NavItem>
+  //                   </Nav>
+  //               </Collapse>
+  //           </Navbar>
+  //       </div>
+  //   )
+  // }
 }}
 
 export default withRouter(Navvy);
