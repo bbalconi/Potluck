@@ -1,6 +1,6 @@
 import openSocket from 'socket.io-client';
 import React, { Component } from 'react';
-const  socket = openSocket('https://localhost:8000');
+const  socket = openSocket('https://potluck0.herokuapp.com');
 
 export default class Timer extends Component{
     constructor(props) {
