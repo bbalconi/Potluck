@@ -170,6 +170,14 @@ app.post('/items', function (req, res, next) {
   });
 });
 
+app.get('/port', (req, res)=>{
+  if (process.env.PORT){
+    res.json(process.env.PORT);
+  } else {
+    res.json('you dont have a port')
+  }
+});
+
 app.get('/houses', function (req, res, next) {
     if (req.user) {
         House.findById(req.user.house, (err, item) => {

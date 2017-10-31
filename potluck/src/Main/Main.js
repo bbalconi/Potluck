@@ -5,7 +5,7 @@ import './Main.css';
 import openSocket from 'socket.io-client';
 import GroceryList from "../GroceryList/GroceryList";
 import GroceryInstructions from "../GroceryInstructions/GroceryInstructions"
-const socket = openSocket('http://potluck-react.herokuapp.com/:' + process.env.PORT);
+//const socket = openSocket('http://potluck-react.herokuapp.com/:');
 const axios = require('axios');
 
 export default class Main extends Component {
@@ -16,12 +16,13 @@ export default class Main extends Component {
     this.deleteItem = this.deleteItem.bind(this);
     this.selectorToServer = this.selectorToServer.bind(this);
     this.getUser = this.getUser.bind(this);
-    this.list((err, checkList) => {
-      console.log("got here")
-      this.setState({
-        checkList
-      });
-    });
+    // this.list((err, checkList) => {
+    //   console.log("got here")
+    //   this.setState({
+    //     checkList
+    //   });
+    // });
+
     this.state = {
       initialized: true,
       checkList: true,
@@ -30,11 +31,11 @@ export default class Main extends Component {
     }
   }
 
-  list(cb) {
-    console.log("here?")
-    socket.on('checkList', list => cb(null, list));
-    socket.emit('getList', 1000);
-  }
+  // list(cb) {
+  //   console.log("here?")
+  //   socket.on('checkList', list => cb(null, list));
+  //   socket.emit('getList', 1000);
+  // }
 
   sendData(foodObj) {
     axios.put('/houses', {
@@ -45,11 +46,15 @@ export default class Main extends Component {
       this.setState({
         items: data.data
       });
+      
     });
   };
 
   getUser() {
     axios.get('/user').then((res) => {
+      axios.get('/port').then((res)=>{
+        var socket = openSocket('http://potluck-react.herokuapp.com/:' + res.data);
+      });
     })
   }
 
