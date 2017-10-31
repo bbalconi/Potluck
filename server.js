@@ -148,7 +148,7 @@ ioServer.on('connection', (client)=>{
 });
   
 app.get('/*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  res.sendFile('./potluck/index.html');
 });
 
 app.post('/items', function (req, res, next) {
