@@ -44,7 +44,7 @@ class Main extends Component {
             that.user = res.data;
             //TODO: get this working for production
             //this.socket = openSocket('http://potluck-react.herokuapp.com/:' + res.data);
-            that.socket = openSocket('http://potluck-react.herokuapp.com/');
+            that.socket = openSocket('https://potluck-react.herokuapp.com/');
 
             console.log('trying to join here: ' + res.data.house._id);
             that.socket.emit('joinHouse', res.data.house._id);
