@@ -4,8 +4,8 @@ import { Collapse, Button, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, Nav
 import './Nav.css'
 
 class Navvy extends Component {
-  constructor(){
-    super()
+  constructor(props){
+    super(props)
     this.toggle = this.toggle.bind(this);
     this.navLogOut = this.navLogOut.bind(this);
     this.state = {
@@ -26,8 +26,7 @@ class Navvy extends Component {
   }
 
   render(){
-    //if (sessionStorage.getItem('name') != null) {
-        let name = sessionStorage.getItem("name");
+    if (this.props.currentUser.firstName) {
         return(
             <div id="navvy">
                 <Navbar light expand="md">
@@ -36,20 +35,14 @@ class Navvy extends Component {
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto"  navbar>
                             <NavItem>
-                                <Link to="/profile" style={{color: 'black'}}>Hello, {name}!</Link>
+                                <Link to="/profile" style={{color: 'red'}}>Hello, {this.props.currentUser.firstName}!</Link>
                             </NavItem>
                             <NavItem>
-                                <Link to="/house" style={{color: 'black'}} >Create List</Link>
+                                <Link to="/house" style={{color: 'red'}} >Create List</Link>
                             </NavItem>
                             <NavItem>
-                                <Link to="/join-house" style={{color: 'black'}}>Join List</Link>
+                                <Link to="/join-house" style={{color: 'red'}}>Join List</Link>
                             </NavItem>
-                            <NavItem>
-                            <Link to="/signUp" style={{color: 'black'}}>SignUp</Link>
-                        </NavItem>
-                        <NavItem>
-                            <Link to="/login" style={{color: 'black'}}>Login</Link>
-                        </NavItem>
                             <NavItem>
                                 <Button action onClick={this.navLogOut} >Logout</Button>
                             </NavItem>
@@ -58,26 +51,26 @@ class Navvy extends Component {
                 </Navbar>
             </div>
         )
-  //   } else {
-  //       return(                                                                                   
-  //       <div id="navvy">
-  //           <Navbar light expand="md">
-  //               <NavbarBrand className='nav-brand' href="/main"><img src='./images/1.png'/></NavbarBrand>
-  //               <NavbarToggler onClick={this.toggle} />
-  //               <Collapse isOpen={this.state.isOpen} navbar>
-  //                   <Nav className="ml-auto" navbar>
-  //                       <NavItem>
-  //                           <Link to="/signUp" style={{color: 'black'}}>SignUp</Link>
-  //                       </NavItem>
-  //                       <NavItem>
-  //                           <Link to="/login" style={{color: 'black'}}>Login</Link>
-  //                       </NavItem>
-  //                   </Nav>
-  //               </Collapse>
-  //           </Navbar>
-  //       </div>
-  //   )
-  // }
+    } else {
+        return(                                                                                   
+        <div id="navvy">
+            <Navbar light expand="md">
+                <NavbarBrand className='nav-brand' href="/main"><img src='./images/1.png'/></NavbarBrand>
+                <NavbarToggler onClick={this.toggle} />
+                <Collapse isOpen={this.state.isOpen} navbar>
+                    <Nav className="ml-auto" navbar>
+                        <NavItem>
+                            <Link to="/signUp" style={{color: 'red'}}>SignUp</Link>
+                        </NavItem>
+                        <NavItem>
+                            <Link to="/login" style={{color: 'red'}}>Login</Link>
+                        </NavItem>
+                    </Nav>
+                </Collapse>
+            </Navbar>
+        </div>
+    )
+  }
 }}
 
 export default withRouter(Navvy);

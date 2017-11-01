@@ -74,7 +74,6 @@ passport.deserializeUser(function (id, done) {
       done(null, user);
     }
   })
-
 })
 
 function verifyEmail(email) {
@@ -138,13 +137,84 @@ function sendThing(){
 }
 
 ioServer.on('connection', (client)=>{
-  console.log("client connected")
-  client.on('getList', (interval)=>{
-      console.log("client subbed to getList");
-      setInterval(()=>{
-          client.emit('checkList', sendThing());
-      }, interval);
+
+  client.on('joinHouse', (house)=>{
+    client.join(house);
   });
+
+  client.on('deleteItem', (data)=>{
+    House.findByIdAndUpdate({ _id:data.house  }, "items", (err, house) => {
+      var num = null;
+      house.items.forEach(function (e, i) {
+        if (e._id == data._id) {
+          num = house.items.indexOf(e);
+        }
+      });
+      house.items.splice(num, 1);
+      house.save((err, itemReturned) => {
+        if (err) {
+          console.log(err);
+        } else {
+          House.findById({ _id: data.house }, (err, house) => {
+            if (err) {
+              console.log(err);
+            } else {
+              ioServer.in(data.house).emit('updatedMyItems', house.items)
+            }
+          });
+        }
+      });
+    });
+  });
+
+  client.on('selectorToServer', (data)=>{
+
+    House.findByIdAndUpdate({ _id: data.house }, "items", (err, house) => {
+      house.items.forEach(function (e, i) {
+        if (e._id == data._id) {
+          e.selector = data.selector
+          e.color = data.user.color
+        }
+      });
+      house.save((err, itemReturned) => {
+        if (err) {
+          console.log(err);
+        } else {
+          House.findById({ _id: data.house }, (err, house) => {
+            if (err) {
+              console.log(err);
+            } else {
+              ioServer.in(data.house).emit('updatedMyItems', house.items)
+            }
+          });
+        }
+      });
+    })
+  });
+
+  client.on('addedItem', (data)=>{
+    House.findByIdAndUpdate({ _id: data.house }, "items", (err, house) => {
+      if (err) {
+        console.log(err);
+      } else {
+        house.items.push({ name: data.item.name, quantity: data.item.quantity, selector: false })
+        house.save((err, itemReturned) => {
+          if (err) {
+            console.log(err);
+          } else {
+            House.findById({ _id: data.house }, (err, house) => {
+              if (err) {
+                console.log(err);
+              } else {
+                ioServer.in(data.house).emit('updatedMyItems', house.items)
+              }
+            });
+          }
+        });
+      };
+    })
+  })
+
   client.on('disconnect', ()=>{console.log("client disconnected")});
 });
 // TODO: wrap this in an production variable condition
@@ -178,13 +248,15 @@ app.post('/items', function (req, res, next) {
 });
 
 //change to post
-app.post('/port', (req, res)=>{
+app.post('/socketUrl', (req, res)=>{
   if (process.env.PORT){
-    res.json(process.env.PORT);
+    res.json('http://potluck-react.herokuapp.com/:' + process.env.PORT);
   } else {
-    res.json('you dont have a port')
+    res.json('localhost:5000')
   }
 });
+
+
 
 app.post('/houses', function (req, res, next) {
     if (req.user) {
@@ -231,6 +303,8 @@ app.put('/selector', (req, res, next) => {
   })
 })
 
+
+// /main interface usage has been replaced with sockets
 app.put('/houses/', (req, res, next) => {
   House.findByIdAndUpdate({ _id: req.user.house }, "items", (err, house) => {
     if (err) {
@@ -386,6 +460,7 @@ app.post('/login', function (req, res, next) {
   var password = req.body.password;
 });
 
+
 //change to post
 app.post('/logout', (req, res) => {
    req.logout();
@@ -428,15 +503,19 @@ app.post("/create-house", (req, res, next) => {
 });
 
 //change to post
-app.post('/user', (req, res, next) => {
-  User.findById(req.user._id, (err, foundUser) => {
-    if (err) {
-      console.log(err)
+app.post('/getUser', (req, res, next) => {
+  if (req.user){
+    User.findById(req.user._id, (err, foundUser) => {
+      if (err) {
+        console.log(err)
+      }
+      }).populate('house').exec((err, user) => {
+        res.json(user)
+      });
+  } else {
+      res.json({message:'nobody logged in '});
     }
-  }).populate('house').exec((err, user) => {
-    res.json(user)
   });
-});
 
 app.put('/join', (req, res, next) => {
     House.findOne({ "houseName": req.body.joinHouse }, "password users housemate", (err, house) => {

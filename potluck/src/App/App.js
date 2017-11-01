@@ -29,6 +29,15 @@ class App extends Component {
         }
     }
 
+    componentDidMount(){
+      axios.post('/getUser').then((res)=>{
+        if (res.data.firstName){
+          this.setState({
+            currentUser:res.data
+          });
+        }
+      })
+    }
 
   submitLogin(a, b) {
     return new Promise((resolve, reject)=>{
@@ -40,7 +49,6 @@ class App extends Component {
             this.setState({
                 currentUser: res.data
             });
-            sessionStorage.setItem('name', this.state.currentUser.firstName);       
         }   
         resolve(res.data);
       });
@@ -50,40 +58,24 @@ class App extends Component {
   logOut(){
     return new Promise((resolve, reject)=>{      
     axios.post('/logout').then((res)=>{
-        sessionStorage.removeItem('name', "");
         resolve(res.data);      
       })
   }
 )} 
   render() {
-    ()=>{
-      
-    }
-        if(sessionStorage.name != null){
             return (
                 <Router>
                 <div className='bg'>
                     <Route path='/' render={()=><Navvy logOut={this.logOut} currentUser={this.state.currentUser}/>} />
                     <Route path='/Login' render={() => <Login submitLogin={this.submitLogin} />}/>
                     <Route path='/Signup' render={()=> <SignUp/>}/> 
-                    <Route path='/Main' render={()=> <Main/>}/>
+                    <Route path='/Main' render={()=> <Main  user={this.state.currentUser} />}/>
                     <Route path='/House' render={()=> <House/>}/>
                     <Route path='/Join-House' render={()=> <JoinHouse />}/>
                 </div>
                 </Router>
             
             )
-        }else{
-            return (
-                <Router>
-                <div className='bg'>
-                    <Route path='/' render={()=><Navvy logOut={this.logOut} currentUser={this.state.currentUser}/>} />
-                    <Route path='/Login' render={() => <Login submitLogin={this.submitLogin} />}/>
-                    <Route path='/Signup' render={()=> <SignUp/>}/>
-                </div>
-                </Router>
-            )
-        }
     }
 }
 

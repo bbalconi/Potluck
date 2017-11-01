@@ -5,10 +5,11 @@ import './Main.css';
 import openSocket from 'socket.io-client';
 import GroceryList from "../GroceryList/GroceryList";
 import GroceryInstructions from "../GroceryInstructions/GroceryInstructions"
-//const socket = openSocket('http://potluck-react.herokuapp.com/:');
+import { withRouter } from 'react-router-dom';
+
 const axios = require('axios');
 
-export default class Main extends Component {
+class Main extends Component {
   constructor(props) {
     super(props)
     this.getList = this.getList.bind(this);
@@ -16,12 +17,7 @@ export default class Main extends Component {
     this.deleteItem = this.deleteItem.bind(this);
     this.selectorToServer = this.selectorToServer.bind(this);
     this.getUser = this.getUser.bind(this);
-    // this.list((err, checkList) => {
-    //   console.log("got here")
-    //   this.setState({
-    //     checkList
-    //   });
-    // });
+    this.socket;
 
     this.state = {
       initialized: true,
@@ -31,53 +27,50 @@ export default class Main extends Component {
     }
   }
 
-  // list(cb) {
-  //   console.log("here?")
-  //   socket.on('checkList', list => cb(null, list));
-  //   socket.emit('getList', 1000);
-  // }
-
   sendData(foodObj) {
-    axios.put('/houses', {
-
-      name: foodObj.name,
-      quantity: foodObj.quantity,
-    }, { headers: { 'Content-Type': 'application/json' } }).then((data) => {
-      this.setState({
-        items: data.data
-      });
-      
+    this.socket.emit('addedItem', { 
+      item:foodObj,
+      house:this.user.house._id
     });
   };
 
   getUser() {
-    axios.post('/user').then((res) => {
-      axios.post('/port').then((res)=>{
-        var socket = openSocket('http://potluck-react.herokuapp.com/:' + res.data);
+      axios.post('/socketUrl').then((res)=>{
+        var socketUrl = res.data;
+        axios.post('/getUser').then((res)=>{
+          //no idea why this is getting undefined below
+          var that = this;
+          if (res.data.firstName){
+            that.user = res.data;
+            //TODO: get this working for production
+            //this.socket = openSocket('http://potluck-react.herokuapp.com/:' + res.data);
+            that.socket = openSocket(socketUrl);
+            that.socket.emit('joinHouse', res.data.house._id);
+            that.socket.on('updatedMyItems', (items)=>{
+              that.setState({
+                items:items
+            })
+           })
+          } else {
+            that.props.history.push('/login')
+         }
       });
-    })
+    });
   }
 
-
   deleteItem(id) {
-    axios.put('/delete', {
-      _id: id
-    })
-      .then((data) => {
-        this.setState({
-          items: data.data
-        });
-      });
+    this.socket.emit('deleteItem', {
+      _id: id,
+      house:this.user.house._id
+    });
   };
 
   selectorToServer(id, toggleValue) {
-    axios.put('/selector/', {
-      _id: id, selector: toggleValue
-    }, { headers: { 'Content-Type': 'application/json' } }
-    ).then((data) => {
-      this.setState({
-        items: data.data
-      });
+    this.socket.emit('selectorToServer', {
+      _id : id,
+      selector:toggleValue,
+      house:this.user.house._id,
+      user:this.user
     });
   }
 
@@ -159,3 +152,5 @@ export default class Main extends Component {
     }
   }
 }
+
+export default withRouter(Main);
