@@ -225,9 +225,9 @@ ioServer.on('connection', (client)=>{
 // Gross workaround for production when user types in react route
 // in url bar. Per: https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md
 
- app.get('/*', function (req, res) {
-   res.sendFile(path.join(__dirname, 'potluck', 'build', 'index.html'));
- });
+//  app.get('/*', function (req, res) {
+//    res.sendFile(path.join(__dirname, 'potluck', 'build', 'index.html'));
+//  });
 
 app.post('/items', function (req, res, next) {
   var item = new Item();
