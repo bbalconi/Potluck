@@ -138,11 +138,14 @@ function sendThing(){
 
 ioServer.on('connection', (client)=>{
 
+
   client.on('joinHouse', (house)=>{
+    console.log('joining a house: ' + house);
     client.join(house);
   });
 
   client.on('deleteItem', (data)=>{
+    console.log('deteled item')
     House.findByIdAndUpdate({ _id:data.house  }, "items", (err, house) => {
       var num = null;
       house.items.forEach(function (e, i) {
@@ -168,7 +171,7 @@ ioServer.on('connection', (client)=>{
   });
 
   client.on('selectorToServer', (data)=>{
-
+    console.log('selected to server')
     House.findByIdAndUpdate({ _id: data.house }, "items", (err, house) => {
       house.items.forEach(function (e, i) {
         if (e._id == data._id) {
@@ -193,6 +196,7 @@ ioServer.on('connection', (client)=>{
   });
 
   client.on('addedItem', (data)=>{
+    console.log('adding an item')
     House.findByIdAndUpdate({ _id: data.house }, "items", (err, house) => {
       if (err) {
         console.log(err);
