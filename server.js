@@ -137,7 +137,6 @@ function sendThing(){
 }
 
 ioServer.on('connection', (client)=>{
-
   console.log('WEVE CONNECTGED')
   client.on('joinHouse', (house)=>{
     console.log('joining a house: ' + house);
@@ -254,7 +253,7 @@ app.post('/items', function (req, res, next) {
 //change to post
 app.post('/socketUrl', (req, res)=>{
   if (process.env.PORT){
-    res.json('https://potluck-react.herokuapp.com/:' + process.env.PORT);
+    res.json('https://potluck-react.herokuapp.com:' + process.env.PORT);
   } else {
     res.json('localhost:5000')
   }
