@@ -70,6 +70,7 @@ class House extends Component {
                 roommates: "",
                 confirmPassword: ''
             });
+            this.props.history.push('/join-house')            
         }else{
             this.setState({
                 message: "Please enter a name.",

@@ -33,15 +33,15 @@ class Navvy extends Component {
                     <Link to="/main"><img src='./images/1.png'/></Link>
                     <NavbarToggler onClick={this.toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>
-                        <Nav className="ml-auto"  navbar>
+                        <Nav className="ml-auto" left  navbar>
                             <NavItem>
-                                <Link to="/profile" style={{color: 'red'}}>Hello, {this.props.currentUser.firstName}!</Link>
+                                <Link to="/profile" style={{color: 'black'}}>Hello, {this.props.currentUser.firstName}!</Link>
                             </NavItem>
                             <NavItem>
-                                <Link to="/house" style={{color: 'red'}} >Create List</Link>
+                                <Link to="/house" style={{color: 'black'}} >Create List</Link>
                             </NavItem>
                             <NavItem>
-                                <Link to="/join-house" style={{color: 'red'}}>Join List</Link>
+                                <Link to="/join-house" style={{color: 'black'}}>Join List</Link>
                             </NavItem>
                             <NavItem>
                                 <Button action onClick={this.navLogOut} >Logout</Button>
@@ -58,12 +58,12 @@ class Navvy extends Component {
                 <NavbarBrand className='nav-brand' href="/main"><img src='./images/1.png'/></NavbarBrand>
                 <NavbarToggler onClick={this.toggle} />
                 <Collapse isOpen={this.state.isOpen} navbar>
-                    <Nav className="ml-auto" navbar>
+                    <Nav className="ml-auto" left navbar>
                         <NavItem>
-                            <Link to="/signUp" style={{color: 'red'}}>SignUp</Link>
+                            <Link to="/signUp" style={{color: 'black'}}>SignUp</Link>
                         </NavItem>
                         <NavItem>
-                            <Link to="/login" style={{color: 'red'}}>Login</Link>
+                            <Link to="/login" style={{color: 'black'}}>Login</Link>
                         </NavItem>
                     </Nav>
                 </Collapse>

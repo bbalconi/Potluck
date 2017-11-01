@@ -16,7 +16,7 @@ export default class KeyItem extends Component {
 
       return (
         <tr className='key-row'>
-          <td><Button style={{backgroundColor: userColor}}>{userFirstName}</Button>
+          <td className='key-btn'><Button className='try' style={{backgroundColor: userColor}}>{userFirstName}</Button>
           </td>
         </tr>
     )

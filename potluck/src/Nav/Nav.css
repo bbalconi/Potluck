@@ -2,10 +2,20 @@
   padding-top: .5%;
   color: rgb(255, 255, 255, 1);
   font-size: 18px;
+  align-content: left;
+  justify-content: left;
+}
+
+.navbar-nav{
+  width: 100%;
 }
 
 .nav-brand{
   margin-left: 2%;
+}
+
+.nav-item{
+  padding: 5px 8px; 
 }
 
 .nav-thing{

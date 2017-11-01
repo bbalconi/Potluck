@@ -20,7 +20,7 @@ class Main extends Component {
     this.socket;
 
     this.state = {
-      initialized: true,
+      initialized: false,
       checkList: true,
       items: [],
       house: {}
@@ -44,16 +44,16 @@ class Main extends Component {
             that.user = res.data;
             //TODO: get this working for production
             //this.socket = openSocket('http://potluck-react.herokuapp.com/:' + res.data);
+            debugger;
             that.socket = openSocket('https://potluck-react.herokuapp.com/');
-
-            console.log('trying to join here: ' + res.data.house._id);
+            if (res.data.house !== null){
             that.socket.emit('joinHouse', res.data.house._id);
             that.socket.on('updatedMyItems', (items)=>{
               that.setState({
                 items:items
-            })
+            })          
            })
-          } else {
+          }} else {
             that.props.history.push('/login')
          }
       });
@@ -105,7 +105,7 @@ class Main extends Component {
     if (this.state.checkList) {
       this.getList();
       this.setState({
-        checkList: false
+        checkList: false,
       })
     }
   }

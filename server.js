@@ -107,14 +107,14 @@ function inviteEmail(email) {
         }
       });
       let mailOptions = {
-        from: '"Fred Foo 👻" <idfkbob@gmail.com>',
+        from: '"Potluck 👻" <idfkbob@gmail.com>',
         to: beenVerified,
         subject: 'Hello ✔',
-        text: 'Hello world?',
+        text: 'Hi there!',
         html: '<body>' +
         '<style>#bob{font-size: 50%;}</style>' +
         "<p>You have received an invitation to join your friends on our app, Potluck! </p>" +
-        "<footer class=bob>If you are Erin or Brian, then you need to change this. It's located in server.js starting at line 112.</footer>" +
+        "<footer class=bob>Access our application at http://potluck-react.herokuapp.com ! Create an account, then join the list 'Blunderbuss' using the password '123' !</footer>" +
         '</body>',
         attachments: [{
           filename: 'nyan cat ✔.gif',
