@@ -254,7 +254,7 @@ app.post('/items', function (req, res, next) {
 //change to post
 app.post('/socketUrl', (req, res)=>{
   if (process.env.PORT){
-    res.json('http://potluck-react.herokuapp.com/:' + process.env.PORT);
+    res.json('https://potluck-react.herokuapp.com/:' + process.env.PORT);
   } else {
     res.json('localhost:5000')
   }
