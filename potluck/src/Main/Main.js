@@ -45,6 +45,7 @@ class Main extends Component {
             //TODO: get this working for production
             //this.socket = openSocket('http://potluck-react.herokuapp.com/:' + res.data);
             that.socket = openSocket(socketUrl);
+            
             console.log('trying to join here: ' + res.data.house._id);
             that.socket.emit('joinHouse', res.data.house._id);
             that.socket.on('updatedMyItems', (items)=>{
