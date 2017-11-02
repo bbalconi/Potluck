@@ -30,8 +30,8 @@ export default class List extends Component {
 
   addToList() {
     this.props.sendData({
-      name:this.state.input,
-      quantity:this.state.quantity
+      name: this.state.input,
+      quantity: this.state.quantity
     });
 
     this.setState({
@@ -56,6 +56,6 @@ export default class List extends Component {
           <InputGroupButton disabled={!isEnabled} color="primary" onClick={this.addToList} >Add Item</InputGroupButton>
         </InputGroup>
       </div>
-      )
-    }
+    )
   }
+}

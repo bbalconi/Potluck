@@ -23,17 +23,16 @@ class Login extends Component {
     this.setState({ password: event.target.value });
   }
 
-  //how are we able to do .then(user)?
   testFunc(a, b) {
     this.props.submitLogin(a, b).then((user) => {
-      if (user.found){
-      this.props.history.push("/main");
+      if (user.found) {
+        this.props.history.push("/main");
       } else {
-          this.setState({
-            message: user.message
-          })
+        this.setState({
+          message: user.message
+        })
       }
-    }, (e)=>{
+    }, (e) => {
       console.log(e);
     });
   }
@@ -49,7 +48,7 @@ class Login extends Component {
         <Col className='space'></Col>
         <Card className='login-card'>
           <CardTitle className='login-title'>Login</CardTitle>
-          <CardSubtitle style={{color: 'red'}}>{this.state.message}</CardSubtitle>
+          <CardSubtitle style={{ color: 'red' }}>{this.state.message}</CardSubtitle>
           <CardBody>
             <FormGroup className="login-input">
               <Label for="email">Email</Label>{' '}

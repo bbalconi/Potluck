@@ -8,78 +8,79 @@ import House from "../CreateHouse/CreateHouse.js";
 import JoinHouse from "../JoinHouse/JoinHouse.js";
 import Timer from "../timer.js";
 import {
-    BrowserRouter as Router,
-    Route,
+  BrowserRouter as Router,
+  Route,
 } from 'react-router-dom';
 var axios = require('axios');
 
 class App extends Component {
-    constructor() {
-        super();
-        this.submitLogin = this.submitLogin.bind(this)
-        this.logOut = this.logOut.bind(this)
-        this.state = {
-            email: "",
-            password: "",
-            message: "",
-            bool: false,
-            currentUser: {
-                firstName: "",
-            }
-        }
+  constructor() {
+    super();
+    this.submitLogin = this.submitLogin.bind(this)
+    this.logOut = this.logOut.bind(this)
+    this.state = {
+      email: "",
+      password: "",
+      message: "",
+      bool: false,
+      currentUser: {
+        firstName: "",
+      }
     }
+  }
 
-    componentDidMount(){
-      axios.post('/getUser').then((res)=>{
-        if (res.data.firstName){
-          this.setState({
-            currentUser:res.data
-          });
-        }
-      })
-    }
+  componentDidMount() {
+    axios.post('/getUser').then((res) => {
+      if (res.data.firstName) {
+        this.setState({
+          currentUser: res.data
+        });
+      }
+    })
+  }
 
   submitLogin(a, b) {
-    return new Promise((resolve, reject)=>{
+    return new Promise((resolve, reject) => {
       axios.post('/login', {
-            username: a,
-            password: b,
-    }).then((res) => {
-        if(res.data.success){
-            this.setState({
-                currentUser: res.data
-            });
-        }   
+        username: a,
+        password: b,
+      }).then((res) => {
+        if (res.data.success) {
+          this.setState({
+            currentUser: res.data
+          });
+        }
         resolve(res.data);
       });
     });
   }
 
-  logOut(){
-    return new Promise((resolve, reject)=>{      
-    axios.post('/logout').then((res)=>{
+  logOut() {
+    return new Promise((resolve, reject) => {
+      axios.post('/logout').then((res) => {
         this.setState({
           currentUser: res.data
         });
-        resolve(res.data);      
+        resolve(res.data);
       })
-  }
-)} 
-  render() {
-            return (
-                <Router>
-                <div className='bg'>
-                    <Route path='/' render={()=><Navvy logOut={this.logOut} currentUser={this.state.currentUser}/>} />
-                    <Route path='/Login' render={() => <Login submitLogin={this.submitLogin} />}/>
-                    <Route path='/Signup' render={()=> <SignUp/>}/> 
-                    <Route path='/Main' render={()=> <Main  user={this.state.currentUser} />}/>
-                    <Route path='/House' render={()=> <House/>}/>
-                    <Route path='/Join-House' render={()=> <JoinHouse />}/>
-                </div>
-                </Router>
-            
-            )
     }
+    )
+  }
+  render() {
+    return (
+      <Router>
+        <div className='bg'>
+          <Route path='/' render={() => <Navvy logOut={this.logOut} currentUser={this.state.currentUser} />} />
+          <Route path='/Login' render={() => <Login submitLogin={this.submitLogin} />} />
+          <Route path='/Signup' render={() => <SignUp />} />
+          <Route path='/Main' render={() => <Main user={this.state.currentUser} />} />
+          <Route path='/House' render={() => <House />} />
+          <Route path='/Join-House' render={() => <JoinHouse />} />
+        </div>
+      </Router>
+
+    )
+  }
 }
 
 

@@ -28,30 +28,31 @@ class Main extends Component {
   }
 
   sendData(foodObj) {
-    this.socket.emit('addedItem', { 
-      item:foodObj,
-      house:this.user.house._id
+    this.socket.emit('addedItem', {
+      item: foodObj,
+      house: this.user.house._id
     });
   };
 
   getUser() {
-      axios.post('/socketUrl').then((res)=>{
-        var socketUrl = res.data;
-        axios.post('/getUser').then((res)=>{
-          var that = this;
-          if (res.data.firstName){
-            that.user = res.data;
-            that.socket = openSocket('https://potluck-react.herokuapp.com/');
-            if (res.data.house !== null){
+    axios.post('/socketUrl').then((res) => {
+      var socketUrl = res.data;
+      axios.post('/getUser').then((res) => {
+        var that = this;
+        if (res.data.firstName) {
+          that.user = res.data;
+          that.socket = openSocket('https://potluck-react.herokuapp.com/');
+          if (res.data.house !== null) {
             that.socket.emit('joinHouse', res.data.house._id);
-            that.socket.on('updatedMyItems', (items)=>{
+            that.socket.on('updatedMyItems', (items) => {
               that.setState({
-                items:items
-            })          
-           })
-          }} else {
-            that.props.history.push('/login')
-         }
+                items: items
+              })
+            })
+          }
+        } else {
+          that.props.history.push('/login')
+        }
       });
     });
   }
@@ -59,16 +60,16 @@ class Main extends Component {
   deleteItem(id) {
     this.socket.emit('deleteItem', {
       _id: id,
-      house:this.user.house._id
+      house: this.user.house._id
     });
   };
 
   selectorToServer(id, toggleValue) {
     this.socket.emit('selectorToServer', {
-      _id : id,
-      selector:toggleValue,
-      house:this.user.house._id,
-      user:this.user
+      _id: id,
+      selector: toggleValue,
+      house: this.user.house._id,
+      user: this.user
     });
   }
 
@@ -80,8 +81,7 @@ class Main extends Component {
             items: data.data.items,
             checkList: false,
             house: data.data
-          });
-
+          })
         } else {
           this.setState({
             items: data.data.items,
@@ -91,7 +91,6 @@ class Main extends Component {
           });
         }
         if (this.state.items) {
-
         }
       })
   }
