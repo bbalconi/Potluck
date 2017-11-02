@@ -220,9 +220,6 @@ ioServer.on('connection', (client)=>{
 
   client.on('disconnect', ()=>{console.log("client disconnected")});
 });
-// TODO: wrap this in an production variable condition
-// Gross workaround for production when user types in react route
-// in url bar. Per: https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md
 
  app.get('/*', function (req, res) {
    res.sendFile(path.join(__dirname, 'potluck', 'build', 'index.html'));
@@ -250,7 +247,6 @@ app.post('/items', function (req, res, next) {
   });
 });
 
-//change to post
 app.post('/socketUrl', (req, res)=>{
   if (process.env.PORT){
     res.json('https://potluck-react.herokuapp.com:' + process.env.PORT);
@@ -269,7 +265,6 @@ app.post('/houses', function (req, res, next) {
                 next(err);
             }
         }).populate('items').exec((err, items) => {
-          //console.log(items)
             if (items != null) {
                 res.json(items);
             }
@@ -418,7 +413,6 @@ app.post("/signup", (req, res, next) => {
             success: false
         });
     } else {
-      //if user = null and err is null
       user.save((error, userReturned) => {
          console.log(userReturned);
         if (error) {
@@ -464,7 +458,6 @@ app.post('/login', function (req, res, next) {
 });
 
 
-//change to post
 app.post('/logout', (req, res) => {
    req.logout();
    req.session.destroy();
@@ -505,7 +498,6 @@ app.post("/create-house", (req, res, next) => {
   })
 });
 
-//change to post
 app.post('/getUser', (req, res, next) => {
   if (req.user){
     User.findById(req.user._id, (err, foundUser) => {

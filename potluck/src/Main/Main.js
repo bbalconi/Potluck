@@ -38,13 +38,9 @@ class Main extends Component {
       axios.post('/socketUrl').then((res)=>{
         var socketUrl = res.data;
         axios.post('/getUser').then((res)=>{
-          //no idea why this is getting undefined below
           var that = this;
           if (res.data.firstName){
             that.user = res.data;
-            //TODO: get this working for production
-            //this.socket = openSocket('http://potluck-react.herokuapp.com/:' + res.data);
-            debugger;
             that.socket = openSocket('https://potluck-react.herokuapp.com/');
             if (res.data.house !== null){
             that.socket.emit('joinHouse', res.data.house._id);

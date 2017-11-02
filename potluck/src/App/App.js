@@ -58,6 +58,9 @@ class App extends Component {
   logOut(){
     return new Promise((resolve, reject)=>{      
     axios.post('/logout').then((res)=>{
+        this.setState({
+          currentUser: res.data
+        });
         resolve(res.data);      
       })
   }
