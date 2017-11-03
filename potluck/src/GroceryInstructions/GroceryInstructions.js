@@ -22,7 +22,7 @@ export default class GroceryInstructions extends Component {
         <div >
           <Col></Col>
           <Card className='instructions'>
-            <CardTi tle className='instructions-title'>{this.props.house.houseName}</CardTitle>{' '}
+            <CardTitle className='instructions-title'>{this.props.house.houseName}</CardTitle>{' '}
             <CardBody> Add to your house grocery list. Let your housemates know which items you intend to purchase
             by clicking on the items. Watch
             them turn your user specific color!
