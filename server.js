@@ -480,8 +480,10 @@ app.post("/create-house", (req, res, next) => {
         message: err,
         success: false
       });
-    } else {
+    } else {      
       house.save((err, houseReturned) => {
+        console.log(houseReturned)
+        console.log('Y THO?')
         if (err) {
           console.log(err);
           next(err);
